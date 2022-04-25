@@ -22,8 +22,15 @@ public class InvoiceService {
     }
 
     public List<Invoice> getAllInvoices() {
-        Query query = sessionFactory.getCurrentSession().createQuery("from Invoice");
+        String hql = "from Invoice";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
         return query.list();
+    }
+
+    public Invoice getSingleInvoice(long invoiceId) {
+        String hql = "from Invoice i where i.id=:id";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", invoiceId);
+        return (Invoice) query.getSingleResult();
     }
 
     public Invoice saveInvoice(Invoice invoice) {
@@ -37,9 +44,10 @@ public class InvoiceService {
         return invoice;
     }
 
-    public long deleteInvoice(long invoiceId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("delete from Invoice i where i.id=:id").setParameter("id", invoiceId);
+    public void deleteInvoice(long invoiceId) {
+        String hql = "delete from Invoice i where i.id=:id";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", invoiceId);
         query.executeUpdate();
-        return invoiceId;
+        return;
     }
 }

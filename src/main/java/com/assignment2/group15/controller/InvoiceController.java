@@ -15,8 +15,13 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     @GetMapping
-    public List<Invoice> getAllInvoices () {
+    public List<Invoice> getAllInvoices() {
         return invoiceService.getAllInvoices();
+    }
+
+    @GetMapping(path="{invoiceId}")
+    public Invoice getSingleInvoice(@PathVariable("invoiceId") long invoiceId) {
+        return invoiceService.getSingleInvoice(invoiceId);
     }
 
     @PostMapping
@@ -30,7 +35,8 @@ public class InvoiceController {
     }
 
     @DeleteMapping(path="{invoiceId}")
-    public long deleteInvoice(@PathVariable("invoiceId") long invoiceId) {
-        return invoiceService.deleteInvoice(invoiceId);
+    public void deleteInvoice(@PathVariable("invoiceId") long invoiceId) {
+        invoiceService.deleteInvoice(invoiceId);
+        return;
     }
 }
