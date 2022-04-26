@@ -1,25 +1,47 @@
 package com.assignment2.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
+@Table
 public class Booking
 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column
 	private String start;
+	
+	@Column
 	private String end;
+	
+	@Column
 	private Date pickup;
+	
+	@Column
 	private Date drop;
+	
+	@Column
 	private Long distance;
+	
+	@Column
 	private Long cusID;
+	
+	@Column
 	private String customer;
+	
+	@Column
 	private String driver;
+	
+	@Column
 	private Long charge;
 	
 	protected Booking() {}
@@ -109,5 +131,12 @@ public class Booking
 		this.charge = charge;
 	}
 	
-	
+	@Override
+	public String toString() //return booking with id, start/end date & charge
+	{
+		return "Booking{" + "id = " + id +
+				", start date = " + start +
+				", end date = " + end +
+				", charge = " + charge + "}";
+	}
 }

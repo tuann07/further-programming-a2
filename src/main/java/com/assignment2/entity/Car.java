@@ -1,29 +1,50 @@
 package com.assignment2.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.Table;
+
+import java.time.ZonedDateTime;
 
 @Entity
+@Table
 public class Car
 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long VIN;
+	
+	@Column
 	private String make;
+	
+	@Column
 	private String model;
+	
+	@Column
 	private String color;
+	
+	@Column
 	private String convertible;
+	
+	@Column
 	private String rating;
+	
+	@Column
 	private String license;
+	
+	@Column
 	private String rateperkm;
-	private Date dateCreated;
+	
+	@Column
+	private ZonedDateTime dateCreated;
 	
 	protected Car() {}
 	
-	public Car(String make, String model, String color, String convertible, String rating, String license, String rateperkm, Date dateCreated)
+	public Car(String make, String model, String color, String convertible, String rating, String license, String rateperkm, ZonedDateTime dateCreated)
 	{
 		this.make=make;
 		this.model=model;
@@ -33,12 +54,6 @@ public class Car
 		this.license=license;
 		this.rateperkm=rateperkm;
 		this.dateCreated=dateCreated;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return String.format("Car[ VIN=%d, make='%s', model='%s', color='%s', convertible='%s', rating='%s', license='%s', rate per km='%s']",VIN, make, model, color, convertible, rating, license, rateperkm);
 	}
 	
 	public Long getVIN()
@@ -102,12 +117,20 @@ public class Car
 		this.rateperkm = rateperkm;
 	}
 
-	public Date getDateCreated() {
+	public ZonedDateTime getDateCreated() {
 		return dateCreated;
 	}
 
-	public void setDateCreated(Date dateCreated) {
+	public void setDateCreated(ZonedDateTime dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 	
+	@Override
+	public String toString() //return car with model, color, license & rate per km
+	{
+		return "Car {"+ "model = " + model +
+				", color = " + color +
+				", license = " + license +
+				", rate per km = " + rateperkm + "|";
+	}
 }
