@@ -1,5 +1,6 @@
 package com.assignment2.group15.controller;
 
+import com.assignment2.group15.error.InvoiceNotExist;
 import com.assignment2.group15.model.Invoice;
 import com.assignment2.group15.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,20 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     @GetMapping
-    public List<Invoice> getAllInvoices() {
-        return invoiceService.getAllInvoices();
+    public List<Invoice> getAllInvoices(@RequestParam(required = false) String page) {
+        int pageNumber;
+
+        try {
+            if (page == null) {
+                pageNumber = 1;
+            } else {
+                pageNumber = Integer.parseInt(page);
+            }
+        } catch (Exception e) {
+            throw new InvoiceNotExist();
+        }
+
+        return invoiceService.getAllInvoices(pageNumber);
     }
 
     @GetMapping(path="{invoiceId}")
