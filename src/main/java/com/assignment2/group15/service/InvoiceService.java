@@ -26,11 +26,17 @@ public class InvoiceService {
         String hql = "from Invoice";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
 
+        // paging
+        // limit number of results each page
         int limit = 10;
+
+        // index of the first result
+        // page 1 starts at index 0
+        // page 2 starts at index 1 * limit
         int firstResultAt = (page - 1) * limit;
 
-        query.setFirstResult(firstResultAt);
-        query.setMaxResults(limit);
+        query.setFirstResult(firstResultAt);  // set location of the first result
+        query.setMaxResults(limit);  // set number of results
 
         return query.list();
     }
@@ -38,10 +44,11 @@ public class InvoiceService {
     public Invoice getSingleInvoice(long invoiceId) {
         String hql = "from Invoice i where i.id=:id";
         Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", invoiceId);
+        
         try {
-            return (Invoice) query.getSingleResult();
+            return (Invoice) query.getSingleResult();  // try getting an item
         } catch (Exception e) {
-            throw new InvoiceNotExist();
+            throw new InvoiceNotExist();  // error means the item not found
         }
     }
 
@@ -54,6 +61,7 @@ public class InvoiceService {
         String hql;
         Query query;
 
+        // find the item in the database
         hql = "from Invoice i where i.id=:id";
         query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", invoiceId);
         try {
@@ -62,6 +70,7 @@ public class InvoiceService {
             throw new InvoiceNotExist();
         }
 
+        // attach the id to the object and update it
         invoice.setId(invoiceId);
         sessionFactory.getCurrentSession().update(invoice);
         return invoice;
@@ -71,18 +80,13 @@ public class InvoiceService {
         String hql;
         Query query;
 
-        hql = "from Invoice i where i.id=:id";
-        query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", invoiceId);
-        try {
-            query.getSingleResult();
-        } catch (Exception e) {
-            throw new InvoiceNotExist();
-        }
-
         hql = "delete from Invoice i where i.id=:id";
         query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", invoiceId);
-        query.executeUpdate();
-
+        try {
+            query.executeUpdate();  // try deleting the item
+        } catch (Exception e) {
+            throw new InvoiceNotExist();  // error means the item not found
+        }
         return;
     }
 }
