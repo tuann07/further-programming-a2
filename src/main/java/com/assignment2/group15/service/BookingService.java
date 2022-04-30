@@ -1,7 +1,10 @@
-package com.assignment2.group15.services;
+package com.assignment2.group15.service;
 
+import com.assignment2.group15.errors.BookingNotExist;
 import com.assignment2.group15.errors.CarNotExist;
+import com.assignment2.group15.entity.Booking;
 import com.assignment2.group15.entity.Car;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,22 +13,20 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+
 @Transactional
 @Service
-public class CarService
+public class BookingService
 {
-    private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory)
     {
         this.sessionFactory = sessionFactory;
     }
-
-    //due to having similar idea, codes in Service & Controller of other entities
-    //are very similar, just different variables
-
-    public List<Car> getAllCar(int page)
+    
+    public List<Booking> getAllBooking(int page)
     {
         String hql = "from Car";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
@@ -42,32 +43,30 @@ public class CarService
 
         return query.list();
     }
-
-    public Car getSingleCar(long carID)
+    public Booking getSingleBooking(long bookID)
     {
-        String hql = "from Car i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", carID);
+        String hql = "from Booking i where i.id=:id";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", bookID);
 
         try
         {
-            return (Car) query.getSingleResult();
+            return (Booking) query.getSingleResult();
         }
         catch (Exception e)
         {
-            throw new CarNotExist();
+            throw new BookingNotExist();
         }
     }
-
-    public Car saveCar(Car car)
+    public Booking saveBooking(Booking booking)
     {
-        sessionFactory.getCurrentSession().save(car);
-        return car;
+        sessionFactory.getCurrentSession().save(booking);
+        return booking;
     }
-
-    public Car updateCar(long carID, Car car)
+    
+    public Booking updateBooking(long bookID, Booking booking)
     {
-        String hql = "from Car i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", carID);
+        String hql = "from Booking i where i.id=:id";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", bookID);
 
         try
         {
@@ -75,31 +74,29 @@ public class CarService
         }
         catch (Exception e)
         {
-            throw new CarNotExist();
+            throw new BookingNotExist();
         }
 
-        car.setId(carID);
-        sessionFactory.getCurrentSession().update(car);
-        return car;
+        booking.setId(bookID);
+        sessionFactory.getCurrentSession().update(booking);
+        return booking;
     }
-
-    public void deleteCar(long carID)
+    
+    public void deleteBooking(long bookID)
     {
         String hql;
         Query query;
 
-        hql = "delete from Car i where i.id=:id";
-        query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", carID);
+        hql = "delete from Booking i where i.id=:id";
+        query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", bookID);
         try
         {
             query.executeUpdate();
         }
         catch (Exception e)
         {
-            throw new CarNotExist();
+            throw new BookingNotExist();
         }
         return;
     }
-
-
 }

@@ -5,7 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import service.CustomerService;
+
+import com.assignment2.group15.service.CustomerService;
 
 @SpringBootApplication
 public class Group15Application {
