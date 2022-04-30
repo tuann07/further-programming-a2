@@ -9,31 +9,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/invoice")
+@RequestMapping(path = "/invoices")
 public class InvoiceController {
 
     @Autowired
     private InvoiceService invoiceService;
 
     @GetMapping
-    public List<Invoice> getAllInvoices(@RequestParam(required = false) String page) {
-        int pageNumber;
-
-        try {
-            if (page == null) {
-                pageNumber = 1;
-            } else {
-                pageNumber = Integer.parseInt(page);
-            }
-        } catch (Exception e) {
-            throw new InvoiceNotExist();
-        }
-
-        return invoiceService.getAllInvoices(pageNumber);
+    public List<Invoice> getAllInvoices(@RequestParam(required = false) Integer page) {
+        return invoiceService.getAllInvoices(page);
     }
 
     @GetMapping(path="{invoiceId}")
-    public Invoice getSingleInvoice(@PathVariable("invoiceId") long invoiceId) {
+    public Invoice getSingleInvoice(@PathVariable("invoiceId") Long invoiceId) {
         return invoiceService.getSingleInvoice(invoiceId);
     }
 
@@ -43,12 +31,12 @@ public class InvoiceController {
     }
 
     @PutMapping(path="{invoiceId}")
-    public Invoice updateInvoice(@PathVariable("invoiceId") long invoiceId, @RequestBody Invoice invoice) {
+    public Invoice updateInvoice(@PathVariable("invoiceId") Long invoiceId, @RequestBody Invoice invoice) {
         return invoiceService.updateInvoice(invoiceId, invoice);
     }
 
     @DeleteMapping(path="{invoiceId}")
-    public void deleteInvoice(@PathVariable("invoiceId") long invoiceId) {
+    public void deleteInvoice(@PathVariable("invoiceId") Long invoiceId) {
         invoiceService.deleteInvoice(invoiceId);
         return;
     }

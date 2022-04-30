@@ -9,10 +9,10 @@ public class Invoice {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
-    private double totalCharge;
+    private Double totalCharge;
 
 //    private Customer customer;
 
@@ -24,30 +24,30 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(long id, double totalCharge, ZonedDateTime dateCreated) {
+    public Invoice(Long id, Double totalCharge, ZonedDateTime dateCreated) {
         this.id = id;
         this.totalCharge = totalCharge;
         this.dateCreated = dateCreated;
     }
 
-    public Invoice(double totalCharge, ZonedDateTime dateCreated) {
+    public Invoice(Double totalCharge, ZonedDateTime dateCreated) {
         this.totalCharge = totalCharge;
         this.dateCreated = dateCreated;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public double getTotalCharge() {
+    public Double getTotalCharge() {
         return totalCharge;
     }
 
-    public void setTotalCharge(double totalCharge) {
+    public void setTotalCharge(Double totalCharge) {
         this.totalCharge = totalCharge;
     }
 
