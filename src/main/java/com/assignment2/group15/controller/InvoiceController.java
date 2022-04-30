@@ -1,23 +1,31 @@
 package com.assignment2.group15.controller;
 
-import com.assignment2.group15.error.InvoiceNotExist;
-import com.assignment2.group15.model.Invoice;
+import com.assignment2.group15.entity.Invoice;
 import com.assignment2.group15.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/invoices")
 public class InvoiceController {
 
-    @Autowired
     private InvoiceService invoiceService;
 
+    @Autowired
+    public void setInvoiceService(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
+
     @GetMapping
-    public List<Invoice> getAllInvoices(@RequestParam(required = false) Integer page) {
-        return invoiceService.getAllInvoices(page);
+    public List<Invoice> getAllInvoices(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) ZonedDateTime start,
+            @RequestParam(required = false) ZonedDateTime end
+    ) {
+        return invoiceService.getAllInvoices(page, start, end);
     }
 
     @GetMapping(path="{invoiceId}")
@@ -36,8 +44,7 @@ public class InvoiceController {
     }
 
     @DeleteMapping(path="{invoiceId}")
-    public void deleteInvoice(@PathVariable("invoiceId") Long invoiceId) {
-        invoiceService.deleteInvoice(invoiceId);
-        return;
+    public String deleteInvoice(@PathVariable("invoiceId") Long invoiceId) {
+        return invoiceService.deleteInvoice(invoiceId);
     }
 }

@@ -2,15 +2,15 @@ package com.assignment2.group15.service;
 
 
 import com.assignment2.group15.error.InvoiceNotExist;
-import com.assignment2.group15.model.Invoice;
+import com.assignment2.group15.entity.Invoice;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Service
@@ -23,15 +23,26 @@ public class InvoiceService {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Invoice> getAllInvoices(Integer page) {
+    public List<Invoice> getAllInvoices(Integer page, ZonedDateTime start, ZonedDateTime end) {
         String hql = "from Invoice";
+        // filtering
+        if (start != null && end != null) {
+            hql += " where i.invoiceDate between :start and :end";
+        }
+
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
 
+        if (start != null && end != null) {
+            query.setParameter("start", start);
+            query.setParameter("end", end);
+        }
+
+        // paging
         Integer pageNumber;
 
         // check if the user provide a page number
         // if not, return page 1 by default
-        if (page == null) {
+        if (page == null || page < 1) {
             pageNumber = 1;
         } else {
             pageNumber = page;
@@ -53,17 +64,17 @@ public class InvoiceService {
     }
 
     public Invoice getSingleInvoice(Long invoiceId) {
-        String hql = "from Invoice i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", invoiceId);
-        
-        try {
-            return (Invoice) query.getSingleResult();  // try getting an item
-        } catch (Exception e) {
-            throw new InvoiceNotExist();  // error means the item not found
+        Invoice invoice = sessionFactory.getCurrentSession().get(Invoice.class, invoiceId);
+
+        if (invoice == null) {
+            throw new InvoiceNotExist(); // throw bad request for not found item
         }
+
+        return invoice;  // try getting an item
     }
 
     public Invoice saveInvoice(Invoice invoice) {
+        invoice.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(invoice);
         return invoice;
     }
@@ -78,13 +89,12 @@ public class InvoiceService {
         return invoice;
     }
 
-    public void deleteInvoice(Long invoiceId) {
+    public String deleteInvoice(Long invoiceId) {
         // ensure the item in the database
-        this.getSingleInvoice(invoiceId);
+        Invoice invoice = this.getSingleInvoice(invoiceId);
 
-        String hql = "delete from Invoice i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", invoiceId);
-        query.executeUpdate();  // try deleting the item
-        return;
+        sessionFactory.getCurrentSession().delete(invoice);
+
+        return "Invoice deleted";
     }
 }

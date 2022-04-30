@@ -1,6 +1,6 @@
 package com.assignment2.group15.config;
 
-import com.assignment2.group15.model.Invoice;
+import com.assignment2.group15.entity.Invoice;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -36,7 +36,7 @@ public class AppConfig {
 
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 
-        sessionFactoryBean.setPackagesToScan("com.assignment2.group15.model");
+        sessionFactoryBean.setPackagesToScan("com.assignment2.group15.entity");
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
