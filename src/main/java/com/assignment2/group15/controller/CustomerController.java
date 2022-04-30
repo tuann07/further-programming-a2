@@ -4,7 +4,6 @@ import com.assignment2.group15.errors.CustomerNotExist;
 import com.assignment2.group15.entity.Customer;
 import com.assignment2.group15.service.CustomerService;
 
-import entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
