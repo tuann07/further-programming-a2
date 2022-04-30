@@ -1,10 +1,10 @@
 package com.assignment2.group15.config;
 
+import com.assignment2.group15.entity.Invoice;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -14,12 +14,16 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Properties;
 
-
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @Configuration
 @EnableTransactionManagement
 @EnableWebMvc
 public class AppConfig {
+
+    @Bean
+    public Invoice invoice() {
+        return new Invoice();
+    }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
@@ -32,7 +36,7 @@ public class AppConfig {
 
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 
-        sessionFactoryBean.setPackagesToScan("com.assignment2.group15.model");
+        sessionFactoryBean.setPackagesToScan("com.assignment2.group15.entity");
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
