@@ -1,6 +1,6 @@
 package com.group15.assignment2;
 
-import entity.Customer;
+import model.Customer;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -55,7 +55,7 @@ public class AppConfig {
         sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
         sessionFactoryBean.setHibernateProperties(properties);
-        sessionFactoryBean.setPackagesToScan("entity");
+        sessionFactoryBean.setPackagesToScan("model");
 
         return sessionFactoryBean;
     }
