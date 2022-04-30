@@ -1,4 +1,4 @@
-package com.assignment2.entity;
+package com.assignment2.group15.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +16,10 @@ public class Car
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+
+	@Column
 	private Long VIN;
-	
 	@Column
 	private String make;
 	
@@ -44,8 +46,9 @@ public class Car
 	
 	protected Car() {}
 	
-	public Car(String make, String model, String color, String convertible, String rating, String license, String rateperkm, ZonedDateTime dateCreated)
+	public Car(Long VIN, String make, String model, String color, String convertible, String rating, String license, String rateperkm, ZonedDateTime dateCreated)
 	{
+		this.VIN=VIN;
 		this.make=make;
 		this.model=model;
 		this.color=color;
@@ -55,76 +58,62 @@ public class Car
 		this.rateperkm=rateperkm;
 		this.dateCreated=dateCreated;
 	}
-	
+
+	public Long getId() { return id;}
+	public void setId(Long id) {this.id = id;}
 	public Long getVIN()
 	{
 		return VIN;
 	}
-
+	public void setVIN(Long VIN) { this.VIN=VIN;}
 	public String getMake() {
 		return make;
 	}
-
 	public void setMake(String make) {
 		this.make = make;
 	}
-
 	public String getModel() {
 		return model;
 	}
-
 	public void setModel(String model) {
 		this.model = model;
 	}
-
 	public String getColor() {
 		return color;
 	}
-
 	public void setColor(String color) {
 		this.color = color;
 	}
-
 	public String getConvertible() {
 		return convertible;
 	}
-
 	public void setConvertible(String convertible) {
 		this.convertible = convertible;
 	}
-
 	public String getRating() {
 		return rating;
 	}
-
 	public void setRating(String rating) {
 		this.rating = rating;
 	}
-
 	public String getLicense() {
 		return license;
 	}
-
 	public void setLicense(String license) {
 		this.license = license;
 	}
-
 	public String getRateperkm() {
 		return rateperkm;
 	}
-
 	public void setRateperkm(String rateperkm) {
 		this.rateperkm = rateperkm;
 	}
-
 	public ZonedDateTime getDateCreated() {
 		return dateCreated;
 	}
-
 	public void setDateCreated(ZonedDateTime dateCreated) {
 		this.dateCreated = dateCreated;
 	}
-	
 	@Override
 	public String toString() //return car with model, color, license & rate per km
 	{

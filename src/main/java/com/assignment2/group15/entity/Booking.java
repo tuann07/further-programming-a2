@@ -1,4 +1,4 @@
-package com.assignment2.entity;
+package com.assignment2.group15.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
