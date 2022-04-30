@@ -20,6 +20,7 @@ public class Car
 
 	@Column
 	private Long VIN;
+	
 	@Column
 	private String make;
 	
@@ -59,61 +60,105 @@ public class Car
 		this.dateCreated=dateCreated;
 	}
 
-	public Long getId() { return id;}
-	public void setId(Long id) {this.id = id;}
+	public Long getId() 
+	{ 
+		return id;
+	}
+	
+	public void setId(Long id) 
+	{
+		this.id = id;
+	}
+	
 	public Long getVIN()
 	{
 		return VIN;
 	}
-	public void setVIN(Long VIN) { this.VIN=VIN;}
-	public String getMake() {
+	
+	public void setVIN(Long VIN) 
+	{ 
+		this.VIN=VIN;
+	}
+	
+	public String getMake() 
+	{
 		return make;
 	}
-	public void setMake(String make) {
+	
+	public void setMake(String make) 
+	{
 		this.make = make;
 	}
-	public String getModel() {
+	
+	public String getModel() 
+	{
 		return model;
 	}
-	public void setModel(String model) {
+	
+	public void setModel(String model) 
+	{
 		this.model = model;
 	}
+	
 	public String getColor() {
 		return color;
 	}
-	public void setColor(String color) {
+	
+	public void setColor(String color) 
+	{
 		this.color = color;
 	}
-	public String getConvertible() {
+	
+	public String getConvertible() 
+	{
 		return convertible;
 	}
-	public void setConvertible(String convertible) {
+	
+	public void setConvertible(String convertible) 
+	{
 		this.convertible = convertible;
 	}
-	public String getRating() {
+	
+	public String getRating() 
+	{
 		return rating;
 	}
-	public void setRating(String rating) {
+	
+	public void setRating(String rating) 
+	{
 		this.rating = rating;
 	}
-	public String getLicense() {
+	
+	public String getLicense() 
+	{
 		return license;
 	}
-	public void setLicense(String license) {
+	
+	public void setLicense(String license) 
+	{
 		this.license = license;
 	}
-	public String getRateperkm() {
+	
+	public String getRateperkm() 
+	{
 		return rateperkm;
 	}
-	public void setRateperkm(String rateperkm) {
+	
+	public void setRateperkm(String rateperkm) 
+	{
 		this.rateperkm = rateperkm;
 	}
-	public ZonedDateTime getDateCreated() {
+	
+	public ZonedDateTime getDateCreated() 
+	{
 		return dateCreated;
 	}
-	public void setDateCreated(ZonedDateTime dateCreated) {
+	
+	public void setDateCreated(ZonedDateTime dateCreated) 
+	{
 		this.dateCreated = dateCreated;
 	}
+	
 	@Override
 	public String toString() //return car with model, color, license & rate per km
 	{

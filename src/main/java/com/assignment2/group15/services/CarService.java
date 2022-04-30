@@ -23,7 +23,7 @@ public class CarService
     }
 
     //due to having similar idea, codes in Service & Controller of other entities
-    //are similar, just different variables
+    //are very similar, just different variables
 
     public List<Car> getAllCar(int page)
     {
