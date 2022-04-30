@@ -1,6 +1,5 @@
 package com.assignment2.group15.config;
 
-import com.assignment2.group15.entity.Invoice;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -19,11 +18,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableWebMvc
 public class AppConfig {
-
-    @Bean
-    public Invoice invoice() {
-        return new Invoice();
-    }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
@@ -57,3 +51,5 @@ public class AppConfig {
     }
 
 }
+
+
