@@ -16,7 +16,7 @@ public class Car
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private Long carID;
 
 	@Column
 	private Long VIN;
@@ -47,8 +47,9 @@ public class Car
 	
 	protected Car() {}
 	
-	public Car(Long VIN, String make, String model, String color, String convertible, String rating, String license, String rateperkm, ZonedDateTime dateCreated)
+	public Car(Long carID, Long VIN, String make, String model, String color, String convertible, String rating, String license, String rateperkm, ZonedDateTime dateCreated)
 	{
+		this.carID=carID;
 		this.VIN=VIN;
 		this.make=make;
 		this.model=model;
@@ -62,12 +63,12 @@ public class Car
 
 	public Long getId() 
 	{ 
-		return id;
+		return carID;
 	}
 	
-	public void setId(Long id) 
+	public void setId(Long carID) 
 	{
-		this.id = id;
+		this.carID = carID;
 	}
 	
 	public Long getVIN()

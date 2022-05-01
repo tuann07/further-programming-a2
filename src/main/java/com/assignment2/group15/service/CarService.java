@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Transactional
@@ -45,60 +47,36 @@ public class CarService
 
     public Car getSingleCar(long carID)
     {
-        String hql = "from Car i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", carID);
-
-        try
+        Car car = sessionFactory.getCurrentSession().get(Car.class, carID);
+        
+        if (car == null)
         {
-            return (Car) query.getSingleResult();
+        	throw new CarNotExist();
         }
-        catch (Exception e)
-        {
-            throw new CarNotExist();
-        }
+        
+        return car;
     }
 
     public Car saveCar(Car car)
     {
+    	car.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(car);
         return car;
     }
 
     public Car updateCar(long carID, Car car)
     {
-        String hql = "from Car i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", carID);
-
-        try
-        {
-            query.getSingleResult();
-        }
-        catch (Exception e)
-        {
-            throw new CarNotExist();
-        }
-
+        this.getSingleCar(carID);
         car.setId(carID);
         sessionFactory.getCurrentSession().update(car);
         return car;
     }
 
-    public void deleteCar(long carID)
+    public String deleteCar(long carID)
     {
-        String hql;
-        Query query;
-
-        hql = "delete from Car i where i.id=:id";
-        query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", carID);
-        try
-        {
-            query.executeUpdate();
-        }
-        catch (Exception e)
-        {
-            throw new CarNotExist();
-        }
-        return;
+    	Car car = this.getSingleCar(carID);
+    	sessionFactory.getCurrentSession().delete(car);
+        return "Delete success";
     }
 
 

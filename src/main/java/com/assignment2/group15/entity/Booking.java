@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Entity
@@ -15,7 +17,7 @@ public class Booking
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private Long bookID;
 	
 	@Column
 	private String startLoc;
@@ -44,10 +46,14 @@ public class Booking
 	@Column
 	private Long charge;
 	
+	@Column
+	private ZonedDateTime dateCreated;
+	
 	protected Booking() {}
 	
-	public Booking (String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge)
+	public Booking (Long bookID, String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge, ZonedDateTime dateCreated)
 	{
+		this.bookID=bookID;
 		this.startLoc=startLoc;
 		this.endLoc=endLoc;
 		this.pickup=pickup;
@@ -57,21 +63,22 @@ public class Booking
 		this.customer=customer;
 		this.driver=driver;
 		this.charge=charge;
+		this.dateCreated=dateCreated;
 	}
 	
-	public Long getId() {
-		return id;
+	public Long getBookID() {
+		return bookID;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setBookID(Long bookID) {
+		this.bookID = bookID;
 	}
 
 	public String getStartLoc() {
 		return startLoc;
 	}
 
-	public void setStart(String startLoc) {
+	public void setStartLoc(String startLoc) {
 		this.startLoc = startLoc;
 	}
 
@@ -139,6 +146,14 @@ public class Booking
 		this.charge = charge;
 	}
 	
+	public ZonedDateTime getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(ZonedDateTime dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
 	@Override
 	public String toString() //return booking with id, start/end date & charge
 	{
