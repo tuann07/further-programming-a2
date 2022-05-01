@@ -11,6 +11,6 @@ public class BookingExceptionController
     @ExceptionHandler(value = BookingNotExist.class)
     public ResponseEntity<Object> exception(BookingNotExist exception)
     {
-        return new ResponseEntity<>("Car not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Booking not found", HttpStatus.NOT_FOUND);
     }
 }

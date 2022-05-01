@@ -25,22 +25,10 @@ public class CarService
     }
 
     
-    public List<Car> getAllCar(Integer page)
+	public List<Car> getAllCar(Integer page)
     {
         String hql = "from Car";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
-        //allow paging
-
-        //int limit = 10;
-        //limit results to 10 for each page
-
-        //index of the first result of each page
-        //int firstResult=(page-1)*limit;
-
-        //query.setFirstResult(firstResult);
-        //query.setMaxResults(limit);
-        
-        
         return query.list();
     }
 
@@ -65,9 +53,9 @@ public class CarService
 
     public Car updateCar(Long id, Car car)
     {
-        //this.getSingleCar(id);
+        this.getSingleCar(id);
         car.setId(id);
-        sessionFactory.getCurrentSession().update(car);
+        sessionFactory.getCurrentSession().merge(car);
         return car;
     }
 

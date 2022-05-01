@@ -1,9 +1,7 @@
 package com.assignment2.group15.service;
 
 import com.assignment2.group15.errors.BookingNotExist;
-import com.assignment2.group15.errors.CarNotExist;
 import com.assignment2.group15.entity.Booking;
-import com.assignment2.group15.entity.Car;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -32,17 +30,6 @@ public class BookingService
     {
         String hql = "from Car";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
-        //allow paging
-
-        //int limit = 10;
-        //limit results to 10 for each page
-
-        //index of the first result of each page
-        //int firstResult=(page-1)*limit;
-
-        //query.setFirstResult(firstResult);
-        //query.setMaxResults(limit);
-
         return query.list();
     }
     public Booking getSingleBooking(Long bookID)
@@ -65,9 +52,9 @@ public class BookingService
     
     public Booking updateBooking(Long bookID, Booking booking)
     {
-        //this.getSingleBooking(bookID);
+        this.getSingleBooking(bookID);
         booking.setBookID(bookID);
-        sessionFactory.getCurrentSession().update(booking);
+        sessionFactory.getCurrentSession().merge(booking);
         return booking;
     }
     

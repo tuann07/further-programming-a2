@@ -73,7 +73,6 @@ public class Car
 		this.rateperkm=rateperkm;
 		this.dateCreated=dateCreated;
 	}
-	
 
 	public Long getId() 
 	{ 
