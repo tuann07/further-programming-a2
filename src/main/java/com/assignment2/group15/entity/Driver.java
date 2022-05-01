@@ -1,7 +1,18 @@
 package com.assignment2.group15.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "driver")
 public class Driver {
+    @Id
+    @Column
     private Long id;
+
+    @Column
     private String name;
 
     public Driver() {

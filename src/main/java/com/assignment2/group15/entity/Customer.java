@@ -17,12 +17,12 @@ public class Customer {
     private String address;
 
     @Column
-    private int phone;
+    private String phone;
 
     public Customer() {
     }
 
-    public Customer(long id, String name, String address, int phone) {
+    public Customer(long id, String name, String address, String phone) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -53,11 +53,11 @@ public class Customer {
         this.address = address;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
