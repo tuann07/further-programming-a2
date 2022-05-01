@@ -18,10 +18,10 @@ public class Booking
 	private Long id;
 	
 	@Column
-	private String start;
+	private String startLoc;
 	
 	@Column
-	private String end;
+	private String endLoc;
 	
 	@Column
 	private Date pickup;
@@ -46,10 +46,10 @@ public class Booking
 	
 	protected Booking() {}
 	
-	public Booking (String start, String end, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge)
+	public Booking (String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge)
 	{
-		this.start=start;
-		this.end=end;
+		this.startLoc=startLoc;
+		this.endLoc=endLoc;
 		this.pickup=pickup;
 		this.drop=drop;
 		this.distance=distance;
@@ -67,20 +67,20 @@ public class Booking
 		this.id = id;
 	}
 
-	public String getStart() {
-		return start;
+	public String getStartLoc() {
+		return startLoc;
 	}
 
-	public void setStart(String start) {
-		this.start = start;
+	public void setStart(String startLoc) {
+		this.startLoc = startLoc;
 	}
 
-	public String getEnd() {
-		return end;
+	public String getEndLoc() {
+		return endLoc;
 	}
 
-	public void setEnd(String end) {
-		this.end = end;
+	public void setEnd(String endLoc) {
+		this.endLoc = endLoc;
 	}
 
 	public Date getPickup() {
@@ -143,8 +143,8 @@ public class Booking
 	public String toString() //return booking with id, start/end date & charge
 	{
 		return "Booking{" + "id = " + id +
-				", start date = " + start +
-				", end date = " + end +
+				", start location = " + startLoc +
+				", end location = " + endLoc +
 				", charge = " + charge + "}";
 	}
 }
