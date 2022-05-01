@@ -49,11 +49,26 @@ public class Booking
 	@Column
 	private ZonedDateTime dateCreated;
 	
-	protected Booking() {}
+	public Booking() {}
 	
 	public Booking (Long bookID, String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge, ZonedDateTime dateCreated)
 	{
 		this.bookID=bookID;
+		this.startLoc=startLoc;
+		this.endLoc=endLoc;
+		this.pickup=pickup;
+		this.drop=drop;
+		this.distance=distance;
+		this.cusID=cusID;
+		this.customer=customer;
+		this.driver=driver;
+		this.charge=charge;
+		this.dateCreated=dateCreated;
+	}
+	
+	public Booking (String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge, ZonedDateTime dateCreated)
+	{
+
 		this.startLoc=startLoc;
 		this.endLoc=endLoc;
 		this.pickup=pickup;

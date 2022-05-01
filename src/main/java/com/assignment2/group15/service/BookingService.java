@@ -28,24 +28,24 @@ public class BookingService
         this.sessionFactory = sessionFactory;
     }
     
-    public List<Booking> getAllBooking(int page)
+    public List<Booking> getAllBooking(Integer page)
     {
         String hql = "from Car";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         //allow paging
 
-        int limit = 10;
+        //int limit = 10;
         //limit results to 10 for each page
 
         //index of the first result of each page
-        int firstResult=(page-1)*limit;
+        //int firstResult=(page-1)*limit;
 
-        query.setFirstResult(firstResult);
-        query.setMaxResults(limit);
+        //query.setFirstResult(firstResult);
+        //query.setMaxResults(limit);
 
         return query.list();
     }
-    public Booking getSingleBooking(long bookID)
+    public Booking getSingleBooking(Long bookID)
     {
         Booking booking = sessionFactory.getCurrentSession().get(Booking.class, bookID);
         
@@ -63,15 +63,15 @@ public class BookingService
         return booking;
     }
     
-    public Booking updateBooking(long bookID, Booking booking)
+    public Booking updateBooking(Long bookID, Booking booking)
     {
-        this.getSingleBooking(bookID);
+        //this.getSingleBooking(bookID);
         booking.setBookID(bookID);
         sessionFactory.getCurrentSession().update(booking);
         return booking;
     }
     
-    public String deleteBooking(long bookID)
+    public String deleteBooking(Long bookID)
     {
         Booking booking = this.getSingleBooking(bookID);
         sessionFactory.getCurrentSession().delete(booking);

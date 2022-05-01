@@ -25,27 +25,28 @@ public class CarService
     }
 
     
-    public List<Car> getAllCar(int page)
+    public List<Car> getAllCar(Integer page)
     {
         String hql = "from Car";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         //allow paging
 
-        int limit = 10;
+        //int limit = 10;
         //limit results to 10 for each page
 
         //index of the first result of each page
-        int firstResult=(page-1)*limit;
+        //int firstResult=(page-1)*limit;
 
-        query.setFirstResult(firstResult);
-        query.setMaxResults(limit);
-
+        //query.setFirstResult(firstResult);
+        //query.setMaxResults(limit);
+        
+        
         return query.list();
     }
 
-    public Car getSingleCar(long carID)
+    public Car getSingleCar(Long id)
     {
-        Car car = sessionFactory.getCurrentSession().get(Car.class, carID);
+        Car car = sessionFactory.getCurrentSession().get(Car.class, id);
         
         if (car == null)
         {
@@ -62,17 +63,17 @@ public class CarService
         return car;
     }
 
-    public Car updateCar(long carID, Car car)
+    public Car updateCar(Long id, Car car)
     {
-        this.getSingleCar(carID);
-        car.setId(carID);
+        //this.getSingleCar(id);
+        car.setId(id);
         sessionFactory.getCurrentSession().update(car);
         return car;
     }
 
-    public String deleteCar(long carID)
+    public String deleteCar(Long id)
     {
-    	Car car = this.getSingleCar(carID);
+    	Car car = this.getSingleCar(id);
     	sessionFactory.getCurrentSession().delete(car);
         return "Delete success";
     }
