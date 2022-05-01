@@ -157,7 +157,7 @@ public class Booking
 	@Override
 	public String toString() //return booking with id, start/end date & charge
 	{
-		return "Booking{" + "id = " + id +
+		return "Booking{" + "id = " + bookID +
 				", start location = " + startLoc +
 				", end location = " + endLoc +
 				", charge = " + charge + "}";

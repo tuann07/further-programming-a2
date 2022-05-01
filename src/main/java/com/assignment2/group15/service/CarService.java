@@ -24,9 +24,7 @@ public class CarService
         this.sessionFactory = sessionFactory;
     }
 
-    //due to having similar idea, codes in Service & Controller of other entities
-    //are very similar, just different variables
-
+    
     public List<Car> getAllCar(int page)
     {
         String hql = "from Car";

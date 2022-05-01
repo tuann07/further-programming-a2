@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -45,58 +47,34 @@ public class BookingService
     }
     public Booking getSingleBooking(long bookID)
     {
-        String hql = "from Booking i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", bookID);
-
-        try
+        Booking booking = sessionFactory.getCurrentSession().get(Booking.class, bookID);
+        
+        if (booking == null)
         {
-            return (Booking) query.getSingleResult();
+        	throw new BookingNotExist();
         }
-        catch (Exception e)
-        {
-            throw new BookingNotExist();
-        }
+        
+        return booking;
     }
     public Booking saveBooking(Booking booking)
     {
+    	booking.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(booking);
         return booking;
     }
     
     public Booking updateBooking(long bookID, Booking booking)
     {
-        String hql = "from Booking i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", bookID);
-
-        try
-        {
-            query.getSingleResult();
-        }
-        catch (Exception e)
-        {
-            throw new BookingNotExist();
-        }
-
-        booking.setId(bookID);
+        this.getSingleBooking(bookID);
+        booking.setBookID(bookID);
         sessionFactory.getCurrentSession().update(booking);
         return booking;
     }
     
-    public void deleteBooking(long bookID)
+    public String deleteBooking(long bookID)
     {
-        String hql;
-        Query query;
-
-        hql = "delete from Booking i where i.id=:id";
-        query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", bookID);
-        try
-        {
-            query.executeUpdate();
-        }
-        catch (Exception e)
-        {
-            throw new BookingNotExist();
-        }
-        return;
+        Booking booking = this.getSingleBooking(bookID);
+        sessionFactory.getCurrentSession().delete(booking);
+        return "Delete success";
     }
 }
