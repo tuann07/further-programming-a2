@@ -1,7 +1,9 @@
 package com.assignment2.group15.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
 @Table
@@ -19,10 +21,10 @@ public class Invoice {
 //    private Driver driver;
 
     @Column
-    private ZonedDateTime pickUpTime;
+    private LocalDate pickUpTime;
 
     @Column
-    private ZonedDateTime dropOffTime;
+    private LocalDate dropOffTime;
 
     @Column
     private ZonedDateTime dateCreated;
@@ -30,7 +32,7 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(Long id, Double totalCharge, ZonedDateTime pickUpTime, ZonedDateTime dropOffTime, ZonedDateTime dateCreated) {
+    public Invoice(Long id, Double totalCharge, LocalDate pickUpTime, LocalDate dropOffTime, ZonedDateTime dateCreated) {
         this.id = id;
         this.totalCharge = totalCharge;
         this.pickUpTime = pickUpTime;
@@ -38,7 +40,7 @@ public class Invoice {
         this.dateCreated = dateCreated;
     }
 
-    public Invoice(Double totalCharge, ZonedDateTime pickUpTime, ZonedDateTime dropOffTime, ZonedDateTime dateCreated) {
+    public Invoice(Double totalCharge, LocalDate pickUpTime, LocalDate dropOffTime, ZonedDateTime dateCreated) {
         this.totalCharge = totalCharge;
         this.pickUpTime = pickUpTime;
         this.dropOffTime = dropOffTime;
@@ -61,19 +63,19 @@ public class Invoice {
         this.totalCharge = totalCharge;
     }
 
-    public ZonedDateTime getPickUpTime() {
+    public LocalDate getPickUpTime() {
         return pickUpTime;
     }
 
-    public void setPickUpTime(ZonedDateTime pickUpTime) {
+    public void setPickUpTime(LocalDate pickUpTime) {
         this.pickUpTime = pickUpTime;
     }
 
-    public ZonedDateTime getDropOffTime() {
+    public LocalDate getDropOffTime() {
         return dropOffTime;
     }
 
-    public void setDropOffTime(ZonedDateTime dropOffTime) {
+    public void setDropOffTime(LocalDate dropOffTime) {
         this.dropOffTime = dropOffTime;
     }
 
