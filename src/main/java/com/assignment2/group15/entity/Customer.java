@@ -17,16 +17,32 @@ public class Customer {
     private String address;
 
     @Column
-    private int phone;
+    private String phone;
+
+    @Column
+    private String start;
+
+    @Column
+    private String end;
 
     public Customer() {
     }
 
-    public Customer(long id, String name, String address, int phone) {
+    public Customer(long id, String name, String address, String phone, String start, String end) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
+        this.start = start;
+        this.end = end;
+    }
+
+    public Customer(String name, String address, String phone, String start, String end) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.start = start;
+        this.end = end;
     }
 
     public long getId() {
@@ -53,15 +69,32 @@ public class Customer {
         this.address = address;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
-        this.phone = phone;
-    }
+    public void setPhone(String phone) { this.phone = phone; }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getStart() { return start; }
+
+    public void setStart(String start) { this.start = start; }
+
+    public String getEnd() { return end; }
+
+    public void setEnd(String end) { this.end = end; }
+
+    @Override
+    public String toString()
+    {
+        return "Customer {"+ "id=" + id +
+                ", name = " + name +
+                ", address = " + address +
+                ", phone = " + phone +
+                ", start = " + start +
+                ", end = " + end +"|";
     }
 }
