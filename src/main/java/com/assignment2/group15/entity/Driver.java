@@ -1,14 +1,54 @@
 package com.assignment2.group15.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Date;
+
+@Entity
+@Table(name = "driver")
 public class Driver {
+    @Id
+    @Column
     private Long id;
+
+    @Column
     private String name;
+
+    @Column
+    private String start;
+
+    @Column
+    private String end;
+
+    @Column
+    private Date pickup;
+
+    @Column
+    private Date drop;
 
     public Driver() {
     }
 
-    public Driver(Long id, String name) {
+    public Driver(Long id, String name, String start, String end, Date pickup, Date drop) {
         this.id = id;
+        this.name = name;
+        this.start = start;
+        this.end = end;
+        this.pickup = pickup;
+        this.drop = drop;
+    }
+
+    public Driver(String name, String start, String end, Date pickup, Date drop) {
+        this.name = name;
+        this.start = start;
+        this.end = end;
+        this.pickup = pickup;
+        this.drop = drop;
+    }
+
+    public Driver(String name) {
         this.name = name;
     }
 
@@ -26,5 +66,30 @@ public class Driver {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStart() { return start; }
+
+    public void setStart(String start) { this.start = start; }
+
+    public String getEnd() { return end; }
+
+    public void setEnd(String end) { this.end = end; }
+
+    public Date getPickup() { return pickup; }
+
+    public void setPickup(Date pickup) { this.pickup = pickup; }
+
+    public Date getDrop() { return drop; }
+
+    public void setDrop(Date drop) { this.drop = drop; }
+
+    @Override
+    public String toString()
+    {
+        return "Customer {"+ "id=" + id +
+                ", name = " + name +
+                ", start date = " + start +
+                ", end date = " + end +"|";
     }
 }
