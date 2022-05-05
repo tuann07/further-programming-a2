@@ -5,7 +5,8 @@ import com.assignment2.group15.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -22,8 +23,8 @@ public class InvoiceController {
     @GetMapping
     public List<Invoice> getAllInvoices(
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) ZonedDateTime start,
-            @RequestParam(required = false) ZonedDateTime end
+            @RequestParam(required = false) String start,
+            @RequestParam(required = false) String end
     ) {
         return invoiceService.getAllInvoices(page, start, end);
     }
