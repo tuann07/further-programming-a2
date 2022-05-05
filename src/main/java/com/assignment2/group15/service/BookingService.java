@@ -1,9 +1,7 @@
 package com.assignment2.group15.service;
 
 import com.assignment2.group15.errors.BookingNotExist;
-import com.assignment2.group15.errors.CarNotExist;
 import com.assignment2.group15.entity.Booking;
-import com.assignment2.group15.entity.Car;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -11,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -26,77 +26,42 @@ public class BookingService
         this.sessionFactory = sessionFactory;
     }
     
-    public List<Booking> getAllBooking(int page)
+    public List<Booking> getAllBooking(Integer page)
     {
         String hql = "from Car";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
-        //allow paging
-
-        int limit = 10;
-        //limit results to 10 for each page
-
-        //index of the first result of each page
-        int firstResult=(page-1)*limit;
-
-        query.setFirstResult(firstResult);
-        query.setMaxResults(limit);
-
         return query.list();
     }
-    public Booking getSingleBooking(long bookID)
+    public Booking getSingleBooking(Long bookID)
     {
-        String hql = "from Booking i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", bookID);
-
-        try
+        Booking booking = sessionFactory.getCurrentSession().get(Booking.class, bookID);
+        
+        if (booking == null)
         {
-            return (Booking) query.getSingleResult();
+        	throw new BookingNotExist();
         }
-        catch (Exception e)
-        {
-            throw new BookingNotExist();
-        }
+        
+        return booking;
     }
     public Booking saveBooking(Booking booking)
     {
+    	booking.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(booking);
         return booking;
     }
     
-    public Booking updateBooking(long bookID, Booking booking)
+    public Booking updateBooking(Long bookID, Booking booking)
     {
-        String hql = "from Booking i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", bookID);
-
-        try
-        {
-            query.getSingleResult();
-        }
-        catch (Exception e)
-        {
-            throw new BookingNotExist();
-        }
-
-        booking.setId(bookID);
-        sessionFactory.getCurrentSession().update(booking);
+        this.getSingleBooking(bookID);
+        booking.setBookID(bookID);
+        sessionFactory.getCurrentSession().merge(booking);
         return booking;
     }
     
-    public void deleteBooking(long bookID)
+    public String deleteBooking(Long bookID)
     {
-        String hql;
-        Query query;
-
-        hql = "delete from Booking i where i.id=:id";
-        query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", bookID);
-        try
-        {
-            query.executeUpdate();
-        }
-        catch (Exception e)
-        {
-            throw new BookingNotExist();
-        }
-        return;
+        Booking booking = this.getSingleBooking(bookID);
+        sessionFactory.getCurrentSession().delete(booking);
+        return "Delete success";
     }
 }

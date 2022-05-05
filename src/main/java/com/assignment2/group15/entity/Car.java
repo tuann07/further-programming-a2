@@ -15,7 +15,7 @@ public class Car
 {
 	@Id
 	@Column
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 
 	@Column
@@ -45,7 +45,21 @@ public class Car
 	@Column
 	private ZonedDateTime dateCreated;
 	
-	protected Car() {}
+	public Car() {}
+	
+	public Car(Long id, Long VIN, String make, String model, String color, String convertible, String rating, String license, String rateperkm, ZonedDateTime dateCreated)
+	{
+		this.id=id;
+		this.VIN=VIN;
+		this.make=make;
+		this.model=model;
+		this.color=color;
+		this.convertible=convertible;
+		this.rating=rating;
+		this.license=license;
+		this.rateperkm=rateperkm;
+		this.dateCreated=dateCreated;
+	}
 	
 	public Car(Long VIN, String make, String model, String color, String convertible, String rating, String license, String rateperkm, ZonedDateTime dateCreated)
 	{

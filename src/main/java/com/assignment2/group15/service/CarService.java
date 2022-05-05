@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Transactional
@@ -22,83 +24,46 @@ public class CarService
         this.sessionFactory = sessionFactory;
     }
 
-    //due to having similar idea, codes in Service & Controller of other entities
-    //are very similar, just different variables
-
-    public List<Car> getAllCar(int page)
+    
+	public List<Car> getAllCar(Integer page)
     {
         String hql = "from Car";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
-        //allow paging
-
-        int limit = 10;
-        //limit results to 10 for each page
-
-        //index of the first result of each page
-        int firstResult=(page-1)*limit;
-
-        query.setFirstResult(firstResult);
-        query.setMaxResults(limit);
-
         return query.list();
     }
 
-    public Car getSingleCar(long carID)
+    public Car getSingleCar(Long id)
     {
-        String hql = "from Car i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", carID);
-
-        try
+        Car car = sessionFactory.getCurrentSession().get(Car.class, id);
+        
+        if (car == null)
         {
-            return (Car) query.getSingleResult();
+        	throw new CarNotExist();
         }
-        catch (Exception e)
-        {
-            throw new CarNotExist();
-        }
+        
+        return car;
     }
 
     public Car saveCar(Car car)
     {
+    	car.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(car);
         return car;
     }
 
-    public Car updateCar(long carID, Car car)
+    public Car updateCar(Long id, Car car)
     {
-        String hql = "from Car i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", carID);
-
-        try
-        {
-            query.getSingleResult();
-        }
-        catch (Exception e)
-        {
-            throw new CarNotExist();
-        }
-
-        car.setId(carID);
-        sessionFactory.getCurrentSession().update(car);
+        this.getSingleCar(id);
+        car.setId(id);
+        sessionFactory.getCurrentSession().merge(car);
         return car;
     }
 
-    public void deleteCar(long carID)
+    public String deleteCar(Long id)
     {
-        String hql;
-        Query query;
-
-        hql = "delete from Car i where i.id=:id";
-        query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", carID);
-        try
-        {
-            query.executeUpdate();
-        }
-        catch (Exception e)
-        {
-            throw new CarNotExist();
-        }
-        return;
+    	Car car = this.getSingleCar(id);
+    	sessionFactory.getCurrentSession().delete(car);
+        return "Delete success";
     }
 
 

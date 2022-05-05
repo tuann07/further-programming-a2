@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Entity
@@ -15,13 +17,13 @@ public class Booking
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private Long bookID;
 	
 	@Column
-	private String start;
+	private String startLoc;
 	
 	@Column
-	private String end;
+	private String endLoc;
 	
 	@Column
 	private Date pickup;
@@ -44,12 +46,16 @@ public class Booking
 	@Column
 	private Long charge;
 	
-	protected Booking() {}
+	@Column
+	private ZonedDateTime dateCreated;
 	
-	public Booking (String start, String end, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge)
+	public Booking() {}
+	
+	public Booking (Long bookID, String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge, ZonedDateTime dateCreated)
 	{
-		this.start=start;
-		this.end=end;
+		this.bookID=bookID;
+		this.startLoc=startLoc;
+		this.endLoc=endLoc;
 		this.pickup=pickup;
 		this.drop=drop;
 		this.distance=distance;
@@ -57,30 +63,46 @@ public class Booking
 		this.customer=customer;
 		this.driver=driver;
 		this.charge=charge;
+		this.dateCreated=dateCreated;
 	}
 	
-	public Long getId() {
-		return id;
+	public Booking (String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge, ZonedDateTime dateCreated)
+	{
+
+		this.startLoc=startLoc;
+		this.endLoc=endLoc;
+		this.pickup=pickup;
+		this.drop=drop;
+		this.distance=distance;
+		this.cusID=cusID;
+		this.customer=customer;
+		this.driver=driver;
+		this.charge=charge;
+		this.dateCreated=dateCreated;
+	}
+	
+	public Long getBookID() {
+		return bookID;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setBookID(Long bookID) {
+		this.bookID = bookID;
 	}
 
-	public String getStart() {
-		return start;
+	public String getStartLoc() {
+		return startLoc;
 	}
 
-	public void setStart(String start) {
-		this.start = start;
+	public void setStartLoc(String startLoc) {
+		this.startLoc = startLoc;
 	}
 
-	public String getEnd() {
-		return end;
+	public String getEndLoc() {
+		return endLoc;
 	}
 
-	public void setEnd(String end) {
-		this.end = end;
+	public void setEnd(String endLoc) {
+		this.endLoc = endLoc;
 	}
 
 	public Date getPickup() {
@@ -139,12 +161,20 @@ public class Booking
 		this.charge = charge;
 	}
 	
+	public ZonedDateTime getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(ZonedDateTime dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
 	@Override
 	public String toString() //return booking with id, start/end date & charge
 	{
-		return "Booking{" + "id = " + id +
-				", start date = " + start +
-				", end date = " + end +
+		return "Booking{" + "id = " + bookID +
+				", start location = " + startLoc +
+				", end location = " + endLoc +
 				", charge = " + charge + "}";
 	}
 }
