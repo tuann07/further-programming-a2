@@ -5,9 +5,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 @Entity
 @Table
@@ -16,7 +15,7 @@ public class Booking
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long bookID;
+	private Long id;
 	
 	@Column
 	private String startLoc;
@@ -25,21 +24,25 @@ public class Booking
 	private String endLoc;
 	
 	@Column
-	private Date pickup;
+	private LocalDate pickup;
 	
 	@Column
-	private Date drop;
+	private LocalDate drop;
 	
 	@Column
 	private Long distance;
-	
-	@Column
-	private Long cusID;
-	
-	@Column
-	private Long charge;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore()
+	private Customer customer;
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore()
+	private Driver driver;
+
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "invoice_id", nullable = false, unique = true)
 	private Invoice invoice;
 	
@@ -47,39 +50,38 @@ public class Booking
 	private ZonedDateTime dateCreated;
 
 	public Booking() {}
-	
-	public Booking (Long bookID, String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, Customer customer, Driver driver, Long charge, ZonedDateTime dateCreated)
-	{
-		this.bookID=bookID;
-		this.startLoc=startLoc;
-		this.endLoc=endLoc;
-		this.pickup=pickup;
-		this.drop=drop;
-		this.distance=distance;
-		this.cusID=cusID;
-		this.charge=charge;
-		this.dateCreated=dateCreated;
-	}
-	
-	public Booking (String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, Customer customer, Driver driver, Long charge, ZonedDateTime dateCreated)
-	{
 
-		this.startLoc=startLoc;
-		this.endLoc=endLoc;
-		this.pickup=pickup;
-		this.drop=drop;
-		this.distance=distance;
-		this.cusID=cusID;
-		this.charge=charge;
-		this.dateCreated=dateCreated;
-	}
-	
-	public Long getBookID() {
-		return bookID;
+	public Booking(Long id, String startLoc, String endLoc, LocalDate pickup, LocalDate drop, Long distance, Customer customer, Driver driver, Invoice invoice, ZonedDateTime dateCreated) {
+		this.id = id;
+		this.startLoc = startLoc;
+		this.endLoc = endLoc;
+		this.pickup = pickup;
+		this.drop = drop;
+		this.distance = distance;
+		this.customer = customer;
+		this.driver = driver;
+		this.invoice = invoice;
+		this.dateCreated = dateCreated;
 	}
 
-	public void setBookID(Long bookID) {
-		this.bookID = bookID;
+	public Booking(String startLoc, String endLoc, LocalDate pickup, LocalDate drop, Long distance, Customer customer, Driver driver, Invoice invoice, ZonedDateTime dateCreated) {
+		this.startLoc = startLoc;
+		this.endLoc = endLoc;
+		this.pickup = pickup;
+		this.drop = drop;
+		this.distance = distance;
+		this.customer = customer;
+		this.driver = driver;
+		this.invoice = invoice;
+		this.dateCreated = dateCreated;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getStartLoc() {
@@ -94,23 +96,23 @@ public class Booking
 		return endLoc;
 	}
 
-	public void setEnd(String endLoc) {
+	public void setEndLoc(String endLoc) {
 		this.endLoc = endLoc;
 	}
 
-	public Date getPickup() {
+	public LocalDate getPickup() {
 		return pickup;
 	}
 
-	public void setPickup(Date pickup) {
+	public void setPickup(LocalDate pickup) {
 		this.pickup = pickup;
 	}
 
-	public Date getDrop() {
+	public LocalDate getDrop() {
 		return drop;
 	}
 
-	public void setDrop(Date drop) {
+	public void setDrop(LocalDate drop) {
 		this.drop = drop;
 	}
 
@@ -122,22 +124,30 @@ public class Booking
 		this.distance = distance;
 	}
 
-	public Long getCusID() {
-		return cusID;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setCusID(Long cusID) {
-		this.cusID = cusID;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
-	public Long getCharge() {
-		return charge;
+	public Driver getDriver() {
+		return driver;
 	}
 
-	public void setCharge(Long charge) {
-		this.charge = charge;
+	public void setDriver(Driver driver) {
+		this.driver = driver;
 	}
-	
+
+	public Invoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
+
 	public ZonedDateTime getDateCreated() {
 		return dateCreated;
 	}
@@ -147,11 +157,18 @@ public class Booking
 	}
 
 	@Override
-	public String toString() //return booking with id, start/end date & charge
-	{
-		return "Booking{" + "id = " + bookID +
-				", start location = " + startLoc +
-				", end location = " + endLoc +
-				", charge = " + charge + "}";
+	public String toString() {
+		return "Booking{" +
+				"id=" + id +
+				", startLoc='" + startLoc + '\'' +
+				", endLoc='" + endLoc + '\'' +
+				", pickup=" + pickup +
+				", drop=" + drop +
+				", distance=" + distance +
+				", customer=" + customer +
+				", driver=" + driver +
+				", invoice=" + invoice +
+				", dateCreated=" + dateCreated +
+				'}';
 	}
 }

@@ -1,6 +1,9 @@
 package com.assignment2.group15.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -9,54 +12,49 @@ import java.util.List;
 public class Driver {
     @Id
     @Column
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String name;
+    private String license;
 
     @Column
-    private String start;
+    private String phone;
 
     @Column
-    private String end;
+    private Double rating;
 
-    @Column
-    private Date pickup;
-
-    @Column
-    private Date drop;
-
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "car_id", nullable = false, unique = true)
     private Car car;
 
     @OneToMany(mappedBy = "driver", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
-    private List<Invoice> invoices;
+    private List<Booking> bookings;
+
+    @Column
+    private ZonedDateTime dateCreated;
 
     public Driver() {
     }
 
-    public Driver(Long id, String name, String start, String end, Date pickup, Date drop) {
+    public Driver(Long id, String license, String phone, Double rating, Car car, List<Booking> bookings, ZonedDateTime dateCreated) {
         this.id = id;
-        this.name = name;
-        this.start = start;
-        this.end = end;
-        this.pickup = pickup;
-        this.drop = drop;
+        this.license = license;
+        this.phone = phone;
+        this.rating = rating;
+        this.car = car;
+        this.bookings = bookings;
+        this.dateCreated = dateCreated;
     }
 
-    public Driver(String name, String start, String end, Date pickup, Date drop) {
-        this.name = name;
-        this.start = start;
-        this.end = end;
-        this.pickup = pickup;
-        this.drop = drop;
-    }
-
-    public Driver(String name) {
-        this.name = name;
+    public Driver(String license, String phone, Double rating, Car car, List<Booking> bookings, ZonedDateTime dateCreated) {
+        this.license = license;
+        this.phone = phone;
+        this.rating = rating;
+        this.car = car;
+        this.bookings = bookings;
+        this.dateCreated = dateCreated;
     }
 
     public Long getId() {
@@ -67,36 +65,64 @@ public class Driver {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLicense() {
+        return license;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLicense(String license) {
+        this.license = license;
     }
 
-    public String getStart() { return start; }
+    public String getPhone() {
+        return phone;
+    }
 
-    public void setStart(String start) { this.start = start; }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-    public String getEnd() { return end; }
+    public Double getRating() {
+        return rating;
+    }
 
-    public void setEnd(String end) { this.end = end; }
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
 
-    public Date getPickup() { return pickup; }
+    public Car getCar() {
+        return car;
+    }
 
-    public void setPickup(Date pickup) { this.pickup = pickup; }
+    public void setCar(Car car) {
+        this.car = car;
+    }
 
-    public Date getDrop() { return drop; }
+    public List<Booking> getBookings() {
+        return bookings;
+    }
 
-    public void setDrop(Date drop) { this.drop = drop; }
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    public ZonedDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(ZonedDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
     @Override
-    public String toString()
-    {
-        return "Customer {"+ "id=" + id +
-                ", name = " + name +
-                ", start date = " + start +
-                ", end date = " + end +"|";
+    public String toString() {
+        return "Driver{" +
+                "id=" + id +
+                ", license='" + license + '\'' +
+                ", phone='" + phone + '\'' +
+                ", rating=" + rating +
+                ", car=" + car +
+                ", bookings=" + bookings +
+                ", dateCreated=" + dateCreated +
+                '}';
     }
 }

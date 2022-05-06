@@ -1,6 +1,9 @@
 package com.assignment2.group15.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
@@ -9,7 +12,7 @@ public class Customer {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
     private String name;
@@ -20,41 +23,38 @@ public class Customer {
     @Column
     private String phone;
 
-    @Column
-    private String start;
-
-    @Column
-    private String end;
-
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
-    private List<Invoice> invoices;
+    private List<Booking> bookings;
+
+    @Column
+    private ZonedDateTime dateCreated;
 
     public Customer() {
     }
 
-    public Customer(long id, String name, String address, String phone, String start, String end) {
+    public Customer(Long id, String name, String address, String phone, List<Booking> bookings, ZonedDateTime dateCreated) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
-        this.start = start;
-        this.end = end;
+        this.bookings = bookings;
+        this.dateCreated = dateCreated;
     }
 
-    public Customer(String name, String address, String phone, String start, String end) {
+    public Customer(String name, String address, String phone, List<Booking> bookings, ZonedDateTime dateCreated) {
         this.name = name;
         this.address = address;
         this.phone = phone;
-        this.start = start;
-        this.end = end;
+        this.bookings = bookings;
+        this.dateCreated = dateCreated;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -78,28 +78,35 @@ public class Customer {
         return phone;
     }
 
-    public void setPhone(String phone) { this.phone = phone; }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getStart() { return start; }
+    public List<Booking> getBookings() {
+        return bookings;
+    }
 
-    public void setStart(String start) { this.start = start; }
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
 
-    public String getEnd() { return end; }
+    public ZonedDateTime getDateCreated() {
+        return dateCreated;
+    }
 
-    public void setEnd(String end) { this.end = end; }
+    public void setDateCreated(ZonedDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
     @Override
-    public String toString()
-    {
-        return "Customer {"+ "id=" + id +
-                ", name = " + name +
-                ", address = " + address +
-                ", phone = " + phone +
-                ", start = " + start +
-                ", end = " + end +"|";
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", bookings=" + bookings +
+                ", dateCreated=" + dateCreated +
+                '}';
     }
 }

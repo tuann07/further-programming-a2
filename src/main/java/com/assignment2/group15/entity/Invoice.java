@@ -20,24 +20,9 @@ public class Invoice {
     @Column
     private Double totalCharge;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Customer customer;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Driver driver;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "invoice")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "invoice")
+    @JsonIgnore()
     private Booking booking;
-
-    @Column
-    private LocalDate pickUpTime;
-
-    @Column
-    private LocalDate dropOffTime;
 
     @Column
     private ZonedDateTime dateCreated;
@@ -45,18 +30,16 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(Long id, Double totalCharge, LocalDate pickUpTime, LocalDate dropOffTime, ZonedDateTime dateCreated) {
+    public Invoice(Long id, Double totalCharge, Booking booking, ZonedDateTime dateCreated) {
         this.id = id;
         this.totalCharge = totalCharge;
-        this.pickUpTime = pickUpTime;
-        this.dropOffTime = dropOffTime;
+        this.booking = booking;
         this.dateCreated = dateCreated;
     }
 
-    public Invoice(Double totalCharge, LocalDate pickUpTime, LocalDate dropOffTime, ZonedDateTime dateCreated) {
+    public Invoice(Double totalCharge, Booking booking, ZonedDateTime dateCreated) {
         this.totalCharge = totalCharge;
-        this.pickUpTime = pickUpTime;
-        this.dropOffTime = dropOffTime;
+        this.booking = booking;
         this.dateCreated = dateCreated;
     }
 
@@ -76,20 +59,12 @@ public class Invoice {
         this.totalCharge = totalCharge;
     }
 
-    public LocalDate getPickUpTime() {
-        return pickUpTime;
+    public Booking getBooking() {
+        return booking;
     }
 
-    public void setPickUpTime(LocalDate pickUpTime) {
-        this.pickUpTime = pickUpTime;
-    }
-
-    public LocalDate getDropOffTime() {
-        return dropOffTime;
-    }
-
-    public void setDropOffTime(LocalDate dropOffTime) {
-        this.dropOffTime = dropOffTime;
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
     public ZonedDateTime getDateCreated() {
@@ -105,6 +80,7 @@ public class Invoice {
         return "Invoice{" +
                 "id=" + id +
                 ", totalCharge=" + totalCharge +
+                ", booking=" + booking +
                 ", dateCreated=" + dateCreated +
                 '}';
     }

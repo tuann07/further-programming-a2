@@ -1,7 +1,8 @@
 package com.assignment2.group15.entity;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -10,11 +11,11 @@ public class Car
 {
 	@Id
 	@Column
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
 	@Column
-	private Long VIN;
+	private String vin;
 	
 	@Column
 	private String make;
@@ -29,154 +30,152 @@ public class Car
 	private String convertible;
 	
 	@Column
-	private String rating;
+	private Double rating;
 	
 	@Column
 	private String license;
 	
 	@Column
-	private String rateperkm;
+	private Double ratePerKm;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "car")
+	@JsonIgnore()
 	private Driver driver;
 
 	@Column
 	private ZonedDateTime dateCreated;
 	
 	public Car() {}
-	
-	public Car(Long id, Long VIN, String make, String model, String color, String convertible, String rating, String license, String rateperkm, ZonedDateTime dateCreated)
-	{
-		this.id=id;
-		this.VIN=VIN;
-		this.make=make;
-		this.model=model;
-		this.color=color;
-		this.convertible=convertible;
-		this.rating=rating;
-		this.license=license;
-		this.rateperkm=rateperkm;
-		this.dateCreated=dateCreated;
-	}
-	
-	public Car(Long VIN, String make, String model, String color, String convertible, String rating, String license, String rateperkm, ZonedDateTime dateCreated)
-	{
-		this.VIN=VIN;
-		this.make=make;
-		this.model=model;
-		this.color=color;
-		this.convertible=convertible;
-		this.rating=rating;
-		this.license=license;
-		this.rateperkm=rateperkm;
-		this.dateCreated=dateCreated;
+
+	public Car(Long id, String vin, String make, String model, String color, String convertible, Double rating, String license, Double ratePerKm, Driver driver, ZonedDateTime dateCreated) {
+		this.id = id;
+		this.vin = vin;
+		this.make = make;
+		this.model = model;
+		this.color = color;
+		this.convertible = convertible;
+		this.rating = rating;
+		this.license = license;
+		this.ratePerKm = ratePerKm;
+		this.driver = driver;
+		this.dateCreated = dateCreated;
 	}
 
-	public Long getId() 
-	{ 
+	public Car(String vin, String make, String model, String color, String convertible, Double rating, String license, Double ratePerKm, Driver driver, ZonedDateTime dateCreated) {
+		this.vin = vin;
+		this.make = make;
+		this.model = model;
+		this.color = color;
+		this.convertible = convertible;
+		this.rating = rating;
+		this.license = license;
+		this.ratePerKm = ratePerKm;
+		this.driver = driver;
+		this.dateCreated = dateCreated;
+	}
+
+	public Long getId() {
 		return id;
 	}
-	
-	public void setId(Long id) 
-	{
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public Long getVIN()
-	{
-		return VIN;
+
+	public String getVin() {
+		return vin;
 	}
-	
-	public void setVIN(Long VIN) 
-	{ 
-		this.VIN=VIN;
+
+	public void setVin(String vin) {
+		this.vin = vin;
 	}
-	
-	public String getMake() 
-	{
+
+	public String getMake() {
 		return make;
 	}
-	
-	public void setMake(String make) 
-	{
+
+	public void setMake(String make) {
 		this.make = make;
 	}
-	
-	public String getModel() 
-	{
+
+	public String getModel() {
 		return model;
 	}
-	
-	public void setModel(String model) 
-	{
+
+	public void setModel(String model) {
 		this.model = model;
 	}
-	
+
 	public String getColor() {
 		return color;
 	}
-	
-	public void setColor(String color) 
-	{
+
+	public void setColor(String color) {
 		this.color = color;
 	}
-	
-	public String getConvertible() 
-	{
+
+	public String getConvertible() {
 		return convertible;
 	}
-	
-	public void setConvertible(String convertible) 
-	{
+
+	public void setConvertible(String convertible) {
 		this.convertible = convertible;
 	}
-	
-	public String getRating() 
-	{
+
+	public Double getRating() {
 		return rating;
 	}
-	
-	public void setRating(String rating) 
-	{
+
+	public void setRating(Double rating) {
 		this.rating = rating;
 	}
-	
-	public String getLicense() 
-	{
+
+	public String getLicense() {
 		return license;
 	}
-	
-	public void setLicense(String license) 
-	{
+
+	public void setLicense(String license) {
 		this.license = license;
 	}
-	
-	public String getRateperkm() 
-	{
-		return rateperkm;
+
+	public Double getRatePerKm() {
+		return ratePerKm;
 	}
-	
-	public void setRateperkm(String rateperkm) 
-	{
-		this.rateperkm = rateperkm;
+
+	public void setRatePerKm(Double ratePerKm) {
+		this.ratePerKm = ratePerKm;
 	}
-	
-	public ZonedDateTime getDateCreated() 
-	{
+
+	public Driver getDriver() {
+		return driver;
+	}
+
+	public void setDriver(Driver driver) {
+		this.driver = driver;
+	}
+
+	public ZonedDateTime getDateCreated() {
 		return dateCreated;
 	}
-	
-	public void setDateCreated(ZonedDateTime dateCreated) 
-	{
+
+	public void setDateCreated(ZonedDateTime dateCreated) {
 		this.dateCreated = dateCreated;
 	}
-	
+
 	@Override
-	public String toString() //return car with model, color, license & rate per km
-	{
-		return "Car {"+ "model = " + model +
-				", color = " + color +
-				", license = " + license +
-				", rate per km = " + rateperkm + "|";
+	public String toString() {
+		return "Car{" +
+				"id=" + id +
+				", vin='" + vin + '\'' +
+				", make='" + make + '\'' +
+				", model='" + model + '\'' +
+				", color='" + color + '\'' +
+				", convertible='" + convertible + '\'' +
+				", rating=" + rating +
+				", license='" + license + '\'' +
+				", ratePerKm=" + ratePerKm +
+				", driver=" + driver +
+				", dateCreated=" + dateCreated +
+				'}';
 	}
 }
