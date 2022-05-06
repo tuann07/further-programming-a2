@@ -1,5 +1,9 @@
 package com.assignment2.group15.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -16,9 +20,18 @@ public class Invoice {
     @Column
     private Double totalCharge;
 
-//    private Customer customer;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Customer customer;
 
-//    private Driver driver;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Driver driver;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "invoice")
+    private Booking booking;
 
     @Column
     private LocalDate pickUpTime;

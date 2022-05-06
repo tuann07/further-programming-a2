@@ -1,11 +1,10 @@
 package com.assignment2.group15.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -38,20 +37,18 @@ public class Booking
 	private Long cusID;
 	
 	@Column
-	private String customer;
-	
-	@Column
-	private String driver;
-	
-	@Column
 	private Long charge;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "invoice_id", nullable = false, unique = true)
+	private Invoice invoice;
 	
 	@Column
 	private ZonedDateTime dateCreated;
-	
+
 	public Booking() {}
 	
-	public Booking (Long bookID, String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge, ZonedDateTime dateCreated)
+	public Booking (Long bookID, String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, Customer customer, Driver driver, Long charge, ZonedDateTime dateCreated)
 	{
 		this.bookID=bookID;
 		this.startLoc=startLoc;
@@ -60,13 +57,11 @@ public class Booking
 		this.drop=drop;
 		this.distance=distance;
 		this.cusID=cusID;
-		this.customer=customer;
-		this.driver=driver;
 		this.charge=charge;
 		this.dateCreated=dateCreated;
 	}
 	
-	public Booking (String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, String customer, String driver, Long charge, ZonedDateTime dateCreated)
+	public Booking (String startLoc, String endLoc, Date pickup, Date drop, Long distance, Long cusID, Customer customer, Driver driver, Long charge, ZonedDateTime dateCreated)
 	{
 
 		this.startLoc=startLoc;
@@ -75,8 +70,6 @@ public class Booking
 		this.drop=drop;
 		this.distance=distance;
 		this.cusID=cusID;
-		this.customer=customer;
-		this.driver=driver;
 		this.charge=charge;
 		this.dateCreated=dateCreated;
 	}
@@ -135,22 +128,6 @@ public class Booking
 
 	public void setCusID(Long cusID) {
 		this.cusID = cusID;
-	}
-
-	public String getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(String customer) {
-		this.customer = customer;
-	}
-
-	public String getDriver() {
-		return driver;
-	}
-
-	public void setDriver(String driver) {
-		this.driver = driver;
 	}
 
 	public Long getCharge() {

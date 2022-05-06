@@ -1,11 +1,6 @@
 package com.assignment2.group15.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import java.time.ZonedDateTime;
 
@@ -41,7 +36,10 @@ public class Car
 	
 	@Column
 	private String rateperkm;
-	
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
+	private Driver driver;
+
 	@Column
 	private ZonedDateTime dateCreated;
 	

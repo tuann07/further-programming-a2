@@ -1,9 +1,6 @@
 package com.assignment2.group15.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -27,6 +24,11 @@ public class Driver {
 
     @Column
     private Date drop;
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id", nullable = false, unique = true)
+    private Car car;
 
     public Driver() {
     }

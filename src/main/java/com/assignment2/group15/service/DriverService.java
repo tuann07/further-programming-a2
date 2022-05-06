@@ -5,11 +5,13 @@ import com.assignment2.group15.errors.DriverNotExist;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
+@Service
 public class DriverService {
     @Autowired
     private SessionFactory sessionFactory;
