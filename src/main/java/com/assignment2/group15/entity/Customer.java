@@ -1,6 +1,7 @@
 package com.assignment2.group15.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -24,6 +25,10 @@ public class Customer {
 
     @Column
     private String end;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    private List<Invoice> invoices;
 
     public Customer() {
     }

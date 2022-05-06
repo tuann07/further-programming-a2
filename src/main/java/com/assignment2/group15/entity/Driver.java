@@ -2,6 +2,7 @@ package com.assignment2.group15.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "driver")
@@ -29,6 +30,10 @@ public class Driver {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id", nullable = false, unique = true)
     private Car car;
+
+    @OneToMany(mappedBy = "driver", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    private List<Invoice> invoices;
 
     public Driver() {
     }
