@@ -44,7 +44,7 @@ public class InvoiceController {
             @RequestParam String end,
             @PathVariable Long driverId
     ) {
-        return invoiceService.getRevenueByCustomer(driverId, start, end);
+        return invoiceService.getRevenueByDriver(driverId, start, end);
     }
 
     @GetMapping(path="/invoices/{invoiceId}")

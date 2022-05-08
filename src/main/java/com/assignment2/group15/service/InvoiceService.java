@@ -20,11 +20,11 @@ import java.util.List;
 public class InvoiceService {
 
     private SessionFactory sessionFactory;
-    private BookingService bookingSerivce;
+    private BookingService bookingService;
 
     @Autowired
-    public void setBookingSerivce(BookingService bookingSerivce) {
-        this.bookingSerivce = bookingSerivce;
+    public void setBookingService(BookingService bookingService) {
+        this.bookingService = bookingService;
     }
 
     @Autowired
@@ -92,7 +92,8 @@ public class InvoiceService {
     }
 
     public Invoice saveInvoice(Long bookingId, Invoice invoice) {
-        Booking booking = bookingSerivce.getSingleBooking(bookingId);
+        // find and set booking
+        Booking booking = bookingService.getSingleBooking(bookingId);
         invoice.setBooking(booking);
         // override the date created with the current time
         invoice.setDateCreated(ZonedDateTime.now());
