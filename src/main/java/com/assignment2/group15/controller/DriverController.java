@@ -36,12 +36,14 @@ public class DriverController {
     }
 
     @PostMapping
-    public Driver saveDriver(@RequestBody Driver driver) {
-        return driverService.saveDriver(driver);
+    public Driver saveDriver(@RequestBody Driver driver, @RequestParam Long carId)
+    {
+        return driverService.saveDriver(driver, carId);
     }
 
     @PutMapping(path="{driverId}")
-    public Driver updateDriver(@PathVariable("driverId") long driverId, @RequestBody Driver driver) {
+    public Driver updateDriver(@PathVariable("driverId") long driverId, @RequestBody Driver driver)
+    {
         return driverService.updateDriver(driverId, driver);
     }
 

@@ -35,9 +35,9 @@ public class BookingController
 	}
 	
 	@PostMapping
-	public Booking saveBook(@RequestBody Booking booking)
+	public Booking saveBooking(@RequestBody Booking booking, @RequestParam Long customerId, @RequestParam Long driverId)
 	{
-		return bookService.saveBooking(booking);
+		return bookService.saveBooking(booking, customerId, driverId);
 	}
 	
 	@PutMapping(path="{id}")

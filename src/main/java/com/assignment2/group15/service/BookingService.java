@@ -1,5 +1,7 @@
 package com.assignment2.group15.service;
 
+import com.assignment2.group15.entity.Customer;
+import com.assignment2.group15.entity.Driver;
 import com.assignment2.group15.errors.BookingNotExist;
 import com.assignment2.group15.entity.Booking;
 import org.hibernate.SessionFactory;
@@ -15,10 +17,21 @@ import java.util.List;
 
 @Transactional
 @Service
-public class BookingService
-{
-	private SessionFactory sessionFactory;
+public class BookingService {
+    private SessionFactory sessionFactory;
+    private CustomerService customerService;
+    private DriverService driverService;
 
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    @Autowired
+    public void setDriverService(DriverService driverService)
+    {
+        this.driverService = driverService;
+    }
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory)
     {
@@ -32,11 +45,11 @@ public class BookingService
         Query query;
         int pageNumber;
 
-        hql = "from Booking i";
+        hql = "from Booking b";
 
         if (start!=null || end !=null)
         {
-            hql+=" where i.pickupTime between :start and :end";
+            hql+=" where b.pickup between :start and :end";
         }
 
         query = sessionFactory.getCurrentSession().createQuery(hql);
@@ -50,9 +63,12 @@ public class BookingService
             query.setParameter("end", endDate);
         }
 
-        if (page == null || page < 1) {
+        if (page == null || page < 1)
+        {
             pageNumber = 1;
-        } else {
+        }
+        else
+        {
             pageNumber = page;
         }
 
@@ -80,8 +96,12 @@ public class BookingService
         
         return booking;
     }
-    public Booking saveBooking(Booking booking)
+    public Booking saveBooking(Booking booking, Long customerId, Long driverId)
     {
+        Customer customer1 = customerService.getSingleCustomer(customerId);
+        Driver driver1 = driverService.getSingleDriver(driverId);
+        booking.setCustomer(customer1);
+        booking.setDriver(driver1);
     	booking.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(booking);
         return booking;
@@ -91,6 +111,8 @@ public class BookingService
     {
         Booking oldBooking = this.getSingleBooking(bookID);
         booking.setId(bookID);
+        booking.setCustomer(oldBooking.getCustomer());
+        booking.setDriver(oldBooking.getDriver());
         booking.setDateCreated(oldBooking.getDateCreated());
         sessionFactory.getCurrentSession().merge(booking);
         return booking;

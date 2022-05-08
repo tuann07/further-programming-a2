@@ -61,7 +61,6 @@ public class CustomerService {
     }
     public Customer updateCustomer(long customerID, Customer customer) {
         Customer oldCustomer = this.getSingleCustomer(customerID);
-
         customer.setId(customerID);
         customer.setDateCreated(oldCustomer.getDateCreated());
 
