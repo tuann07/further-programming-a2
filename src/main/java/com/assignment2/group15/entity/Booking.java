@@ -58,9 +58,6 @@ public class Booking
 		this.pickup = pickup;
 		this.drop = drop;
 		this.distance = distance;
-		this.customer = customer;
-		this.driver = driver;
-		this.invoice = invoice;
 		this.dateCreated = dateCreated;
 	}
 

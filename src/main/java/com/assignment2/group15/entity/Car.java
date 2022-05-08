@@ -12,7 +12,7 @@ public class Car
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private Long carID;
 
 	@Column
 	private String vin;
@@ -47,8 +47,8 @@ public class Car
 	
 	public Car() {}
 
-	public Car(Long id, String vin, String make, String model, String color, String convertible, Double rating, String license, Double ratePerKm, Driver driver, ZonedDateTime dateCreated) {
-		this.id = id;
+	public Car(Long carID, String vin, String make, String model, String color, String convertible, Double rating, String license, Double ratePerKm, Driver driver, ZonedDateTime dateCreated) {
+		this.carID = carID;
 		this.vin = vin;
 		this.make = make;
 		this.model = model;
@@ -74,12 +74,12 @@ public class Car
 		this.dateCreated = dateCreated;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getcarID() {
+		return carID;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setcarID(Long carID) {
+		this.carID = carID;
 	}
 
 	public String getVin() {
@@ -165,7 +165,7 @@ public class Car
 	@Override
 	public String toString() {
 		return "Car{" +
-				"id=" + id +
+				"id=" + carID +
 				", vin='" + vin + '\'' +
 				", make='" + make + '\'' +
 				", model='" + model + '\'' +
