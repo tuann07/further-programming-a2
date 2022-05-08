@@ -1,5 +1,7 @@
 package com.assignment2.group15.service;
 
+import com.assignment2.group15.entity.Booking;
+import com.assignment2.group15.entity.Driver;
 import com.assignment2.group15.entity.Invoice;
 import com.assignment2.group15.errors.InvoiceNotExist;
 import org.hibernate.SessionFactory;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.awt.print.Book;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -17,6 +20,12 @@ import java.util.List;
 public class InvoiceService {
 
     private SessionFactory sessionFactory;
+    private BookingService bookingSerivce;
+
+    @Autowired
+    public void setBookingSerivce(BookingService bookingSerivce) {
+        this.bookingSerivce = bookingSerivce;
+    }
 
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -32,7 +41,7 @@ public class InvoiceService {
         hql = "from Invoice i";
 
         if (start != null || end != null) {
-            hql += " where i.pickUpTime between :start and :end";
+            hql += " where i.booking.pickup between :start and :end";
         }
 
         query = sessionFactory.getCurrentSession().createQuery(hql);
@@ -82,7 +91,9 @@ public class InvoiceService {
         return invoice;
     }
 
-    public Invoice saveInvoice(Invoice invoice) {
+    public Invoice saveInvoice(Long bookingId, Invoice invoice) {
+        Booking booking = bookingSerivce.getSingleBooking(bookingId);
+        invoice.setBooking(booking);
         // override the date created with the current time
         invoice.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(invoice);
@@ -107,5 +118,37 @@ public class InvoiceService {
         sessionFactory.getCurrentSession().delete(invoice);
 
         return "Invoice deleted";
+    }
+
+    public Double getRevenueByCustomer(Long customerId, String start, String end) {
+        // convert local date
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+
+        // create query to get the sum of total charges of a customer with the pickup date between a start and end
+        String hql = "select sum(i.totalCharge) from Invoice i where i.booking.customer.id = :customerId and i.booking.pickup between :start and :end";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("customerId", customerId);
+        query.setParameter("start", startDate);
+        query.setParameter("end", endDate);
+
+        // get sum
+        return (Double) query.getSingleResult();
+    }
+
+    public Double getRevenueByDriver(Long driverId, String start, String end) {
+        // convert to local date
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+
+        // create query to get the sum of total charges of a driver with the pickup date between a start and end
+        String hql = "select sum(i.totalCharge) from Invoice i where i.booking.driver.id = :driverId and i.booking.pickup between :start and :end";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("driverId", driverId);
+        query.setParameter("start", startDate);
+        query.setParameter("end", endDate);
+
+        // get sum
+        return (Double) query.getSingleResult();
     }
 }
