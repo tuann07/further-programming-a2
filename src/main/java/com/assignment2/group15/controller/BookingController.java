@@ -21,9 +21,11 @@ public class BookingController
 	}
 	
 	@GetMapping
-	public List<Booking> getAllBooking(@RequestParam(required=false) Integer page)
+	public List<Booking> getAllBooking(@RequestParam(required=false) Integer page,
+									   @RequestParam(required=false) String start,
+									   @RequestParam(required=false) String end)
 	{
-		return bookService.getAllBooking(page);
+		return bookService.getAllBooking(page, start, end);
 	}
 	
 	@GetMapping(path="{bookID}")

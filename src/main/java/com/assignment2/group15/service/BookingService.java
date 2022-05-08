@@ -2,14 +2,13 @@ package com.assignment2.group15.service;
 
 import com.assignment2.group15.errors.BookingNotExist;
 import com.assignment2.group15.entity.Booking;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -26,10 +25,48 @@ public class BookingService
         this.sessionFactory = sessionFactory;
     }
     
-    public List<Booking> getAllBooking(Integer page)
+    public List<Booking> getAllBooking(Integer page, String start, String end)
     {
-        String hql = "from Car";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        String hql;
+        LocalDate startDate, endDate;
+        Query query;
+        int pageNumber;
+
+        hql = "from Booking i";
+
+        if (start!=null || end !=null)
+        {
+            hql+=" where i.pickupTime between :start and :end";
+        }
+
+        query = sessionFactory.getCurrentSession().createQuery(hql);
+
+        if (start!=null || end !=null)
+        {
+            startDate = start == null ? LocalDate.of(1970, 1, 1) : LocalDate.parse(start);
+            endDate = end == null ? LocalDate.of(2050, 1, 1) : LocalDate.parse(end);
+
+            query.setParameter("start", startDate);
+            query.setParameter("end", endDate);
+        }
+
+        if (page == null || page < 1) {
+            pageNumber = 1;
+        } else {
+            pageNumber = page;
+        }
+
+        // limit number of results per page
+        int limit = 10;
+
+        // index of the first result
+        // page 1 starts at index 0
+        // page n starts at index (n - 1) * limit
+        int firstResultAt = (pageNumber - 1) * limit;
+
+        query.setFirstResult(firstResultAt);  // set location of the first result
+        query.setMaxResults(limit);  // set number of results
+
         return query.list();
     }
     public Booking getSingleBooking(Long bookID)
@@ -52,8 +89,9 @@ public class BookingService
     
     public Booking updateBooking(Long bookID, Booking booking)
     {
-        this.getSingleBooking(bookID);
-        booking.setBookID(bookID);
+        Booking oldBooking = this.getSingleBooking(bookID);
+        booking.setId(bookID);
+        booking.setDateCreated(oldBooking.getDateCreated());
         sessionFactory.getCurrentSession().merge(booking);
         return booking;
     }
