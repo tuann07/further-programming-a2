@@ -20,8 +20,8 @@ public class Invoice {
     @Column
     private Double totalCharge;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "invoice")
-    @JsonIgnore()
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "booking_id", nullable = false, unique = true)
     private Booking booking;
 
     @Column
@@ -74,7 +74,6 @@ public class Invoice {
     public void setDateCreated(ZonedDateTime dateCreated) {
         this.dateCreated = dateCreated;
     }
-
     @Override
     public String toString() {
         return "Invoice{" +

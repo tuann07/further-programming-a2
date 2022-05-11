@@ -21,31 +21,33 @@ public class BookingController
 	}
 	
 	@GetMapping
-	public List<Booking> getAllBooking(@RequestParam(required=false) Integer page)
+	public List<Booking> getAllBooking(@RequestParam(required=false) Integer page,
+									   @RequestParam(required=false) String start,
+									   @RequestParam(required=false) String end)
 	{
-		return bookService.getAllBooking(page);
+		return bookService.getAllBooking(page, start, end);
 	}
 	
-	@GetMapping(path="{bookID}")
-	public Booking getSingleBooking(@PathVariable("bookID") Long bookID)
+	@GetMapping(path="{id}")
+	public Booking getSingleBooking(@PathVariable("id") Long bookID)
 	{
 		return bookService.getSingleBooking(bookID);
 	}
 	
 	@PostMapping
-	public Booking saveBook(@RequestBody Booking booking)
+	public Booking saveBooking(@RequestBody Booking booking, @RequestParam Long customerId, @RequestParam Long driverId)
 	{
-		return bookService.saveBooking(booking);
+		return bookService.saveBooking(booking, customerId, driverId);
 	}
 	
-	@PutMapping(path="{bookID}")
-	public Booking updateBooking(@PathVariable("bookID") Long bookID, @RequestBody Booking booking)
+	@PutMapping(path="{id}")
+	public Booking updateBooking(@PathVariable("id") Long bookID, @RequestBody Booking booking)
 	{
 		return bookService.updateBooking(bookID, booking);
 	}
 	
-	@DeleteMapping(path="{bookID}")
-	public String deleteBooking(@PathVariable("bookID") Long bookID)
+	@DeleteMapping(path="{id}")
+	public String deleteBooking(@PathVariable("id") Long bookID)
 	{
 		return bookService.deleteBooking(bookID);
 	}

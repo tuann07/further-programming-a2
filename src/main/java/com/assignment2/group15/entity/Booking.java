@@ -32,18 +32,18 @@ public class Booking
 	@Column
 	private Long distance;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore()
 	private Customer customer;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore()
 	private Driver driver;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "invoice_id", nullable = false, unique = true)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "booking")
+	@JsonIgnore()
 	private Invoice invoice;
 	
 	@Column
@@ -58,9 +58,6 @@ public class Booking
 		this.pickup = pickup;
 		this.drop = drop;
 		this.distance = distance;
-		this.customer = customer;
-		this.driver = driver;
-		this.invoice = invoice;
 		this.dateCreated = dateCreated;
 	}
 
