@@ -20,7 +20,7 @@ public class Invoice {
     @Column
     private Double totalCharge;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id", nullable = false, unique = true)
     private Booking booking;
 

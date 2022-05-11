@@ -49,8 +49,7 @@ public class InvoiceService {
         // filtering
         // by date, only activate if start or end date is presented
         if (start != null || end != null) {
-            // try to parse both dates, if there is one,
-            // set the start or end date faraway
+            // try to parse both dates, if there is one, set the other one faraway
             startDate = start == null ? LocalDate.of(1970, 1, 1) : LocalDate.parse(start);
             endDate = end == null ? LocalDate.of(2050, 1, 1) : LocalDate.parse(end);
 
@@ -107,6 +106,7 @@ public class InvoiceService {
 
         // get the old date and attach the id
         invoice.setId(invoiceId);
+        invoice.setBooking(oldInvoice.getBooking());
         invoice.setDateCreated(oldInvoice.getDateCreated());
 
         sessionFactory.getCurrentSession().merge(invoice);

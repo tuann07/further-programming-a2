@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping()
+@RequestMapping
 public class InvoiceController {
 
     private InvoiceService invoiceService;
@@ -48,22 +48,32 @@ public class InvoiceController {
     }
 
     @GetMapping(path="/invoices/{invoiceId}")
-    public Invoice getSingleInvoice(@PathVariable("invoiceId") Long invoiceId) {
+    public Invoice getSingleInvoice(
+            @PathVariable("invoiceId") Long invoiceId
+    ) {
         return invoiceService.getSingleInvoice(invoiceId);
     }
 
-    @PostMapping(path = "/bookings/{bookingId}/invoices")
-    public Invoice saveInvoice(@RequestBody Invoice invoice, @PathVariable Long bookingId) {
+    @PostMapping(path = "/invoices")
+    public Invoice saveInvoice(
+            @RequestBody Invoice invoice,
+            @RequestParam("bookingId") Long bookingId
+    ) {
         return invoiceService.saveInvoice(bookingId, invoice);
     }
 
     @PutMapping(path="/invoices/{invoiceId}")
-    public Invoice updateInvoice(@PathVariable("invoiceId") Long invoiceId, @RequestBody Invoice invoice) {
+    public Invoice updateInvoice(
+            @PathVariable("invoiceId") Long invoiceId,
+            @RequestBody Invoice invoice
+    ) {
         return invoiceService.updateInvoice(invoiceId, invoice);
     }
 
     @DeleteMapping(path="/invoices/{invoiceId}")
-    public String deleteInvoice(@PathVariable("invoiceId") Long invoiceId) {
+    public String deleteInvoice(
+            @PathVariable("invoiceId") Long invoiceId
+    ) {
         return invoiceService.deleteInvoice(invoiceId);
     }
 }

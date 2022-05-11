@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path="/cars")
@@ -50,4 +51,11 @@ public class CarController
 		return carService.deleteCar(id);
 	}
 
+	@GetMapping(path="/usage")
+	public List<Map<String, Long>> getDaysCarUsedInMonth(
+			@RequestParam("month") Integer month,
+			@RequestParam("year") Integer year
+	) {
+		return carService.getCarUsageInMonth(year, month);
+	}
 }
