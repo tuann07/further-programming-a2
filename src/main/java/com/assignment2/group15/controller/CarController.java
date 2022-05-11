@@ -22,15 +22,17 @@ public class CarController
 	}
 	
 	@GetMapping
-	public List<Car> getAllCar (@RequestParam(required=false) Integer page)
+	public List<Car> getAllCar (@RequestParam(required=false) Integer page,
+								@RequestParam(required=false) String start,
+								@RequestParam(required=false) String end)
 	{
-		return carService.getAllCar(page);
+		return carService.getAllCar(page, start, end);
 	}
 	
-	@GetMapping(path="{id}")
-	public Car getSingleCar(@PathVariable("id") Long id)
+	@GetMapping(path="{carID}")
+	public Car getSingleCar(@PathVariable("carID") Long carID)
 	{
-		return carService.getSingleCar(id);
+		return carService.getSingleCar(carID);
 	}
 	
 	@PostMapping
@@ -39,16 +41,16 @@ public class CarController
 		return carService.saveCar(car);
 	}
 	
-	@PutMapping(path="{id}")
-	public Car updateCar(@PathVariable("id") Long id, @RequestBody Car car)
+	@PutMapping(path="{carID}")
+	public Car updateCar(@PathVariable("carID") Long carID, @RequestBody Car car)
 	{
-		return carService.updateCar(id, car);
+		return carService.updateCar(carID, car);
 	}
 	
-	@DeleteMapping(path="{id}")
-	public String deleteCar(@PathVariable("id") Long id )
+	@DeleteMapping(path="{carID}")
+	public String deleteCar(@PathVariable("carID") Long carID )
 	{
-		return carService.deleteCar(id);
+		return carService.deleteCar(carID);
 	}
 
 	@GetMapping(path="/usage")

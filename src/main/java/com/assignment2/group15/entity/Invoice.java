@@ -74,7 +74,6 @@ public class Invoice {
     public void setDateCreated(ZonedDateTime dateCreated) {
         this.dateCreated = dateCreated;
     }
-
     @Override
     public String toString() {
         return "Invoice{" +

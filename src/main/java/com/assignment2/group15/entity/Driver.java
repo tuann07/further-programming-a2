@@ -25,7 +25,7 @@ public class Driver {
     private Double rating;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "car_id", nullable = false, unique = true)
+    @JoinColumn(name = "carID", nullable = false, unique = true)
     private Car car;
 
     @OneToMany(mappedBy = "driver", fetch = FetchType.EAGER,

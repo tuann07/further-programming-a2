@@ -1,5 +1,6 @@
 package com.assignment2.group15.service;
 
+import com.assignment2.group15.entity.Car;
 import com.assignment2.group15.entity.Driver;
 import com.assignment2.group15.errors.DriverNotExist;
 import org.hibernate.SessionFactory;
@@ -8,15 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Transactional
 @Service
 public class DriverService {
-    @Autowired
+
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
+    private CarService carService;
+
+    @Autowired
+    public void setCarService(CarService carService)
+    {
+        this.carService = carService;
+    }
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory)
+    {
         this.sessionFactory = sessionFactory;
     }
 
@@ -45,7 +57,11 @@ public class DriverService {
         }
     }
 
-    public Driver saveDriver(Driver driver) {
+    public Driver saveDriver(Driver driver, Long carId)
+    {
+        Car car1 = carService.getSingleCar(carId);
+        driver.setCar(car1);
+        driver.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(driver);
         return driver;
     }

@@ -31,10 +31,51 @@ public class CarService
     }
 
     
-	public List<Car> getAllCar(Integer page)
+	public List<Car> getAllCar(Integer page, String start, String end)
     {
-        String hql = "from Car";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        String hql;
+        LocalDate startDate, endDate;
+        Query query;
+        int pageNumber;
+
+        hql = "from Car i";
+        if (start!=null || end!= null) {
+            hql += "where i.pickUpTime bewteen :start and :end";
+        }
+        query = sessionFactory.getCurrentSession().createQuery(hql);
+
+        // filtering
+        // by date, only activate if start or end date is presented
+        if (start != null || end != null) {
+            // try to parse both dates, if there is one,
+            // set the start or end date faraway
+            startDate = start == null ? LocalDate.of(1970, 1, 1) : LocalDate.parse(start);
+            endDate = end == null ? LocalDate.of(2050, 1, 1) : LocalDate.parse(end);
+
+            query.setParameter("start", startDate);
+            query.setParameter("end", endDate);
+        }
+
+        // paging
+        // check if the user provide a page number
+        // if not, return page 1 by default
+        if (page == null || page < 1) {
+            pageNumber = 1;
+        } else {
+            pageNumber = page;
+        }
+
+        // limit number of results per page
+        int limit = 10;
+
+        // index of the first result
+        // page 1 starts at index 0
+        // page n starts at index (n - 1) * limit
+        int firstResultAt = (pageNumber - 1) * limit;
+
+        query.setFirstResult(firstResultAt);  // set location of the first result
+        query.setMaxResults(limit);  // set number of results
+
         return query.list();
     }
 
@@ -57,10 +98,11 @@ public class CarService
         return car;
     }
 
-    public Car updateCar(Long id, Car car)
+    public Car updateCar(Long carID, Car car)
     {
-        this.getSingleCar(id);
-        car.setId(id);
+        Car oldCar = this.getSingleCar(carID);
+        car.setcarID(carID);
+        car.setDateCreated(oldCar.getDateCreated());
         sessionFactory.getCurrentSession().merge(car);
         return car;
     }
