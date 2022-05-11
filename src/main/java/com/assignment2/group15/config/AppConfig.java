@@ -19,7 +19,6 @@ import java.util.Properties;
 @EnableWebMvc
 public class AppConfig {
 
-
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
 

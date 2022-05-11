@@ -17,8 +17,10 @@ import java.util.List;
 public class DriverService {
 
     private SessionFactory sessionFactory;
-
     private CarService carService;
+
+    private static final int PAGE_DEFAULT = 1;
+    private static final int LIMIT_DEFAULT = 10;
 
     @Autowired
     public void setCarService(CarService carService)
@@ -32,70 +34,76 @@ public class DriverService {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Driver> getAllDriver(int page){
-        String hql = "from Driver";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql);
-        int limit = 10;
-        int firstResult=(page-1)*limit;
-        query.setFirstResult(firstResult);
-        query.setMaxResults(limit);
+    public List<Driver> getAllDriver(Integer page, Integer limit){
+        String hql;
+        Query query;
+        int pageNumber, limitNumber;
+
+        hql = "from Driver";
+
+        query = sessionFactory.getCurrentSession().createQuery(hql);
+
+        // paging
+        // if not provide or negative, set default
+        if (page == null || page < 1) {
+            pageNumber = PAGE_DEFAULT;
+        } else {
+            pageNumber = page;
+        }
+
+        // if not provide or negative, set default
+        if (limit == null || limit < 1) {
+            limitNumber = LIMIT_DEFAULT;
+        } else {
+            limitNumber = limit;
+        }
+
+        // index of the first result
+        // page 1 starts at index 0
+        // page n starts at index (n - 1) * limit
+        int firstResultAt = (pageNumber - 1) * limitNumber;
+
+        query.setFirstResult(firstResultAt);  // set location of the first result
+        query.setMaxResults(limitNumber);  // set number of results
 
         return query.list();
     }
 
-    public Driver getSingleDriver(long DriverId){
-        String hql = "from Driver i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", DriverId);
+    public Driver getSingleDriver(Long driverId){
+        Driver driver = sessionFactory.getCurrentSession().get(Driver.class, driverId);
 
-        try
-        {
-            return (Driver) query.getSingleResult();
-        }
-        catch (Exception e)
-        {
+
+        if (driver == null) {
             throw new DriverNotExist();
         }
+
+        return driver;
     }
 
     public Driver saveDriver(Driver driver, Long carId)
     {
-        Car car1 = carService.getSingleCar(carId);
-        driver.setCar(car1);
+        Car car = carService.getSingleCar(carId);
+        driver.setCar(car);
         driver.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(driver);
         return driver;
     }
 
-    public Driver updateDriver(long driverID, Driver driver) {
-        String hql = "from Driver i where i.id=:id";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", driverID);
+    public Driver updateDriver(Long driverId, Driver driver) {
+        // keep old properties
+        Driver oldDriver = this.getSingleDriver(driverId);
+        driver.setDateCreated(oldDriver.getDateCreated());
+        driver.setCar(oldDriver.getCar());
 
-        try {
-            query.getSingleResult();
-        } catch (Exception e) {
-            throw new DriverNotExist();
-        }
-
-        driver.setId(driverID);
-        sessionFactory.getCurrentSession().update(driver);
+        driver.setId(driverId);
+        sessionFactory.getCurrentSession().merge(driver);
         return driver;
     }
 
-    public void deleteDriver(long driverID)
+    public String deleteDriver(Long driverId)
     {
-        String hql;
-        Query query;
-
-        hql = "delete from Driver i where i.id=:id";
-        query = sessionFactory.getCurrentSession().createQuery(hql).setParameter("id", driverID);
-        try
-        {
-            query.executeUpdate();
-        }
-        catch (Exception e)
-        {
-            throw new DriverNotExist();
-        }
-        return;
+        Driver driver = this.getSingleDriver(driverId);
+        sessionFactory.getCurrentSession().delete(driver);
+        return "Driver deleted";
     }
 }

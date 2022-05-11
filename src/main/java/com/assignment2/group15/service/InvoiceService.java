@@ -22,6 +22,9 @@ public class InvoiceService {
     private SessionFactory sessionFactory;
     private BookingService bookingService;
 
+    private static final int PAGE_DEFAULT = 1;
+    private static final int LIMIT_DEFAULT = 10;
+
     @Autowired
     public void setBookingService(BookingService bookingService) {
         this.bookingService = bookingService;
@@ -32,11 +35,11 @@ public class InvoiceService {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Invoice> getAllInvoices(Integer page, String start, String end) {
+    public List<Invoice> getAllInvoices(Integer page, Integer limit, String start, String end) {
         String hql;
         LocalDate startDate, endDate;
         Query query;
-        int pageNumber;
+        int pageNumber, limitNumber;
 
         hql = "from Invoice i";
 
@@ -49,7 +52,6 @@ public class InvoiceService {
         // filtering
         // by date, only activate if start or end date is presented
         if (start != null || end != null) {
-            // try to parse both dates, if there is one, set the other one faraway
             startDate = start == null ? LocalDate.of(1970, 1, 1) : LocalDate.parse(start);
             endDate = end == null ? LocalDate.of(2050, 1, 1) : LocalDate.parse(end);
 
@@ -58,24 +60,27 @@ public class InvoiceService {
         }
 
         // paging
-        // check if the user provide a page number
-        // if not, return page 1 by default
+        // if not provide or negative, set default
         if (page == null || page < 1) {
-            pageNumber = 1;
+            pageNumber = PAGE_DEFAULT;
         } else {
             pageNumber = page;
         }
 
-        // limit number of results per page
-        int limit = 10;
+        // if not provide or negative, set default
+        if (limit == null || limit < 1) {
+            limitNumber = LIMIT_DEFAULT;
+        } else {
+            limitNumber = limit;
+        }
 
         // index of the first result
         // page 1 starts at index 0
         // page n starts at index (n - 1) * limit
-        int firstResultAt = (pageNumber - 1) * limit;
+        int firstResultAt = (pageNumber - 1) * limitNumber;
 
         query.setFirstResult(firstResultAt);  // set location of the first result
-        query.setMaxResults(limit);  // set number of results
+        query.setMaxResults(limitNumber);  // set number of results
 
         return query.list();
     }

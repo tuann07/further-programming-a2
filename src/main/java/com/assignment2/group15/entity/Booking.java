@@ -42,7 +42,7 @@ public class Booking
 	@JsonIgnore()
 	private Driver driver;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "booking")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "booking")
 	@JsonIgnore()
 	private Invoice invoice;
 	

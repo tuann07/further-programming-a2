@@ -12,43 +12,51 @@ import java.util.List;
 
 public class BookingController
 {
-	private BookingService bookService;
+	private BookingService bookingService;
 	
 	@Autowired
-	public void setBookService(BookingService bookService)
+	public void setBookingService(BookingService bookingService)
 	{
-		this.bookService = bookService;
+		this.bookingService = bookingService;
 	}
 	
 	@GetMapping
-	public List<Booking> getAllBooking(@RequestParam(required=false) Integer page,
-									   @RequestParam(required=false) String start,
-									   @RequestParam(required=false) String end)
-	{
-		return bookService.getAllBooking(page, start, end);
+	public List<Booking> getAllBooking(
+			@RequestParam(required=false) Integer page,
+			@RequestParam(required=false) Integer limit,
+			@RequestParam(required=false) String start,
+			@RequestParam(required=false) String end
+	) {
+		return bookingService.getAllBooking(page, limit, start, end);
 	}
 	
-	@GetMapping(path="{id}")
-	public Booking getSingleBooking(@PathVariable("id") Long bookID)
+	@GetMapping(path="{bookingId}")
+	public Booking getSingleBooking(@PathVariable("bookingId") Long bookID)
 	{
-		return bookService.getSingleBooking(bookID);
+		return bookingService.getSingleBooking(bookID);
 	}
 	
 	@PostMapping
-	public Booking saveBooking(@RequestBody Booking booking, @RequestParam Long customerId, @RequestParam Long driverId)
-	{
-		return bookService.saveBooking(booking, customerId, driverId);
+	public Booking saveBooking(
+			@RequestBody Booking booking,
+			@RequestParam Long customerId,
+			@RequestParam Long driverId
+	) {
+		return bookingService.saveBooking(booking, customerId, driverId);
 	}
 	
-	@PutMapping(path="{id}")
-	public Booking updateBooking(@PathVariable("id") Long bookID, @RequestBody Booking booking)
-	{
-		return bookService.updateBooking(bookID, booking);
+	@PutMapping(path="{bookingId}")
+	public Booking updateBooking(
+			@PathVariable("bookingId") Long bookID,
+			@RequestBody Booking booking
+	) {
+		return bookingService.updateBooking(bookID, booking);
 	}
 	
-	@DeleteMapping(path="{id}")
-	public String deleteBooking(@PathVariable("id") Long bookID)
-	{
-		return bookService.deleteBooking(bookID);
+	@DeleteMapping(path="{bookingId}")
+	public String deleteBooking(
+			@PathVariable("bookingId") Long bookID
+	) {
+		return bookingService.deleteBooking(bookID);
 	}
 }

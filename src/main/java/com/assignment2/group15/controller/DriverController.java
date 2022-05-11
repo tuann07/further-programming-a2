@@ -15,41 +15,40 @@ public class DriverController {
     private DriverService driverService;
 
     @GetMapping
-    public List<Driver> getAllDrivers(@RequestParam(required = false) String page) {
-        int pageNumber;
-
-        try {
-            if (page == null) {
-                pageNumber = 1;
-            } else {
-                pageNumber = Integer.parseInt(page);
-            }
-        } catch (Exception e) {
-            throw new DriverNotExist();
-        }
-        return driverService.getAllDriver(pageNumber);
+    public List<Driver> getAllDrivers(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required=false) Integer limit
+    ) {
+        return driverService.getAllDriver(page, limit);
     }
 
     @GetMapping(path="{driverId}")
-    public Driver getSingleDriver(@PathVariable("driverId") long driverId) {
+    public Driver getSingleDriver(
+            @PathVariable("driverId") Long driverId
+    ) {
         return driverService.getSingleDriver(driverId);
     }
 
     @PostMapping
-    public Driver saveDriver(@RequestBody Driver driver, @RequestParam Long carId)
-    {
+    public Driver saveDriver(
+            @RequestBody Driver driver,
+            @RequestParam Long carId
+    ) {
         return driverService.saveDriver(driver, carId);
     }
 
     @PutMapping(path="{driverId}")
-    public Driver updateDriver(@PathVariable("driverId") long driverId, @RequestBody Driver driver)
-    {
+    public Driver updateDriver(
+            @PathVariable("driverId") Long driverId,
+            @RequestBody Driver driver
+    ) {
         return driverService.updateDriver(driverId, driver);
     }
 
     @DeleteMapping(path="{driverId}")
-    public void deleteDriver(@PathVariable("driverId") long driverId) {
-        driverService.deleteDriver(driverId);
-        return;
+    public String deleteDriver(
+            @PathVariable("driverId") Long driverId
+    ) {
+        return driverService.deleteDriver(driverId);
     }
 }

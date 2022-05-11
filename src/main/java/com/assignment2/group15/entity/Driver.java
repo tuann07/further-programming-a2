@@ -24,11 +24,11 @@ public class Driver {
     @Column
     private Double rating;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "carID", nullable = false, unique = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id", nullable = false, unique = true)
     private Car car;
 
-    @OneToMany(mappedBy = "driver", fetch = FetchType.EAGER,
+    @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<Booking> bookings;
 

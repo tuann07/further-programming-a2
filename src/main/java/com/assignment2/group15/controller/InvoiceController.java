@@ -23,10 +23,11 @@ public class InvoiceController {
     @GetMapping(path = "/invoices")
     public List<Invoice> getAllInvoices(
             @RequestParam(required = false) Integer page,
+            @RequestParam(required=false) Integer limit,
             @RequestParam(required = false) String start,
             @RequestParam(required = false) String end
     ) {
-        return invoiceService.getAllInvoices(page, start, end);
+        return invoiceService.getAllInvoices(page, limit, start, end);
     }
 
     @GetMapping(path="/customers/{customerId}/revenue")

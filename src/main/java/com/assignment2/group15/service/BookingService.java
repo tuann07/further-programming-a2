@@ -22,11 +22,13 @@ public class BookingService {
     private CustomerService customerService;
     private DriverService driverService;
 
+    private static final int PAGE_DEFAULT = 1;
+    private static final int LIMIT_DEFAULT = 10;
+
     @Autowired
     public void setCustomerService(CustomerService customerService) {
         this.customerService = customerService;
     }
-
     @Autowired
     public void setDriverService(DriverService driverService)
     {
@@ -38,24 +40,23 @@ public class BookingService {
         this.sessionFactory = sessionFactory;
     }
     
-    public List<Booking> getAllBooking(Integer page, String start, String end)
+    public List<Booking> getAllBooking(Integer page, Integer limit, String start, String end)
     {
         String hql;
         LocalDate startDate, endDate;
         Query query;
-        int pageNumber;
+        int pageNumber, limitNumber;
 
         hql = "from Booking b";
 
-        if (start!=null || end !=null)
-        {
+        if (start != null || end != null) {
             hql+=" where b.pickup between :start and :end";
         }
 
         query = sessionFactory.getCurrentSession().createQuery(hql);
 
-        if (start!=null || end !=null)
-        {
+        // filtering
+        if (start != null || end != null) {
             startDate = start == null ? LocalDate.of(1970, 1, 1) : LocalDate.parse(start);
             endDate = end == null ? LocalDate.of(2050, 1, 1) : LocalDate.parse(end);
 
@@ -63,34 +64,36 @@ public class BookingService {
             query.setParameter("end", endDate);
         }
 
-        if (page == null || page < 1)
-        {
-            pageNumber = 1;
-        }
-        else
-        {
+        // paging
+        // if not provide or negative, set default
+        if (page == null || page < 1) {
+            pageNumber = PAGE_DEFAULT;
+        } else {
             pageNumber = page;
         }
 
-        // limit number of results per page
-        int limit = 10;
+        // if not provide or negative, set default
+        if (limit == null || limit < 1) {
+            limitNumber = LIMIT_DEFAULT;
+        } else {
+            limitNumber = limit;
+        }
 
         // index of the first result
         // page 1 starts at index 0
         // page n starts at index (n - 1) * limit
-        int firstResultAt = (pageNumber - 1) * limit;
+        int firstResultAt = (pageNumber - 1) * limitNumber;
 
         query.setFirstResult(firstResultAt);  // set location of the first result
-        query.setMaxResults(limit);  // set number of results
+        query.setMaxResults(limitNumber);  // set number of results
 
         return query.list();
     }
-    public Booking getSingleBooking(Long bookID)
+    public Booking getSingleBooking(Long bookingId)
     {
-        Booking booking = sessionFactory.getCurrentSession().get(Booking.class, bookID);
+        Booking booking = sessionFactory.getCurrentSession().get(Booking.class, bookingId);
         
-        if (booking == null)
-        {
+        if (booking == null) {
         	throw new BookingNotExist();
         }
         
@@ -98,10 +101,13 @@ public class BookingService {
     }
     public Booking saveBooking(Booking booking, Long customerId, Long driverId)
     {
-        Customer customer1 = customerService.getSingleCustomer(customerId);
-        Driver driver1 = driverService.getSingleDriver(driverId);
-        booking.setCustomer(customer1);
-        booking.setDriver(driver1);
+        Customer customer = customerService.getSingleCustomer(customerId);
+        Driver driver = driverService.getSingleDriver(driverId);
+
+        booking.setCustomer(customer);
+        booking.setDriver(driver);
+
+        // override date created
     	booking.setDateCreated(ZonedDateTime.now());
         sessionFactory.getCurrentSession().save(booking);
         return booking;
@@ -109,11 +115,16 @@ public class BookingService {
     
     public Booking updateBooking(Long bookID, Booking booking)
     {
+        // keep old properties
         Booking oldBooking = this.getSingleBooking(bookID);
-        booking.setId(bookID);
         booking.setCustomer(oldBooking.getCustomer());
         booking.setDriver(oldBooking.getDriver());
         booking.setDateCreated(oldBooking.getDateCreated());
+
+        // set id
+        booking.setId(bookID);
+
+        // update
         sessionFactory.getCurrentSession().merge(booking);
         return booking;
     }
