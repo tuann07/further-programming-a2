@@ -89,11 +89,16 @@ public class DriverService {
         return driver;
     }
 
-    public Driver updateDriver(Long driverId, Driver driver) {
+    public Driver updateDriver(Driver driver, Long driverId, Long carId) {
         // keep old properties
         Driver oldDriver = this.getSingleDriver(driverId);
         driver.setDateCreated(oldDriver.getDateCreated());
         driver.setCar(oldDriver.getCar());
+
+        if (carId != null) {
+            Car car = carService.getSingleCar(carId);
+            driver.setCar(car);
+        }
 
         driver.setId(driverId);
         sessionFactory.getCurrentSession().merge(driver);

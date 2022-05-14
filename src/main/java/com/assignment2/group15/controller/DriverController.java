@@ -40,9 +40,10 @@ public class DriverController {
     @PutMapping(path="{driverId}")
     public Driver updateDriver(
             @PathVariable("driverId") Long driverId,
+            @RequestParam(required = false) Long carId,
             @RequestBody Driver driver
     ) {
-        return driverService.updateDriver(driverId, driver);
+        return driverService.updateDriver(driver, driverId, carId);
     }
 
     @DeleteMapping(path="{driverId}")
