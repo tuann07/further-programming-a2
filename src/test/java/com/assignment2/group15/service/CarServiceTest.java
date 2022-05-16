@@ -15,18 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CarServiceTest {
     @Autowired
-    private InvoiceService invoiceService;
-    @Autowired
     private CarService carService;
-    @Autowired
-    private BookingService bookingService;
-    @Autowired
-    private DriverService driverService;
-    @Autowired
-    private CustomerService customerService;
 
     // number of rows to be generated in the database
-    final int NUM_OF_OTHERS = 10;
+
     final int NUM_OF_CARS = 5;
 
     @BeforeAll
@@ -34,11 +26,6 @@ class CarServiceTest {
         for (int i = 1; i < NUM_OF_CARS + 1; i++) {
             carService.saveCar(new Car());
         }
-
-        for (int i = 1; i < NUM_OF_CARS + 1; i++) {
-            driverService.saveDriver(new Driver(), (long) i);
-        }
-
     }
 
     @Test

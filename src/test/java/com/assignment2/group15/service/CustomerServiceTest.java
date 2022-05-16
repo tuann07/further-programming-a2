@@ -16,28 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class CustomerServiceTest
 {
     @Autowired
-    private BookingService bookingService;
-    @Autowired
     private CustomerService customerService;
-    @Autowired
-    private DriverService driverService;
-    @Autowired
-    private InvoiceService invoiceService;
 
     // number of rows to be generated in the database
-    final int NUM_OF_OTHERS = 10;
     final int NUM_OF_CUSTOMERS = 5;
 
     @BeforeAll
     void setUp()
     {
-        for (int i = 1; i < NUM_OF_OTHERS + 1; i++)
-        {
-            driverService.saveDriver(new Driver(), (long) i);
-            invoiceService.saveInvoice((long) i, new Invoice());
-            bookingService.saveBooking(new Booking(), (long) i, (long) i);
-
-        }
         for (int i = 1; i < NUM_OF_CUSTOMERS + 1; i++) {
             customerService.saveCustomer(new Customer());
         }
