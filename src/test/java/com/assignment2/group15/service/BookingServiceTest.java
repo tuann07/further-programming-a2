@@ -1,9 +1,12 @@
 package com.assignment2.group15.service;
 
+import com.assignment2.group15.errors.BookingNotExist;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.assignment2.group15.entity.*;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +28,7 @@ class BookingServiceTest
 
     // number of rows to be generated in the database
     final int NUM_OF_OTHERS = 10;
-    final int NUM_OF_INVOICES = 5;
+    final int NUM_OF_BOOKINGS = 5;
 
     @BeforeAll
     void setUp() {
@@ -38,31 +41,69 @@ class BookingServiceTest
             driverService.saveDriver(new Driver(), (long) i);
         }
 
-        for (int i = 1; i < NUM_OF_OTHERS + 1; i++) {
+        for (int i = 1; i < NUM_OF_BOOKINGS + 1; i++) {
             bookingService.saveBooking(new Booking(), (long) i, (long) i);
         }
-
-        for (int i = 1; i < NUM_OF_INVOICES + 1; i++) {
-            invoiceService.saveInvoice((long) i, new Invoice());
-        }
     }
     @Test
-    void getAllBooking() {
-    }
+    @Order(1)
+    void getAllBookingTest()
+    {
+        List<Booking> result = bookingService.getAllBooking(null, null, null, null);
 
-    @Test
-    void getSingleBooking() {
-    }
-
-    @Test
-    void saveBooking() {
+        assertEquals(5, result.size());
+        assertEquals(1, result.get(0).getId());
+        assertEquals(5, result.get(result.size()-1).getId());
     }
 
     @Test
-    void updateBooking() {
+    @Order(1)
+    void getSingleBookingTest()
+    {
+        Booking bookingDb = bookingService.getSingleBooking(1L);
+
+        assertEquals(1, bookingDb.getId());
     }
 
     @Test
-    void deleteBooking() {
+    @Order(1)
+    void getSingleBookingNotExistTest()
+    {
+        assertThrows(BookingNotExist.class, () -> bookingService.getSingleBooking(99L));
+    }
+
+    @Test
+    @Order(5)
+    void updateBookingTest()
+    {
+        Booking booking = new Booking();
+        booking.setDistance((long) 155.0);
+        bookingService.updateBooking(1L, booking);
+        Booking bookingDb = bookingService.getSingleBooking(1L);
+
+        assertEquals((long)155.0, bookingDb.getDistance());
+    }
+
+    @Test
+    @Order(5)
+    void updateBookingNotExistTest()
+    {
+        assertThrows(BookingNotExist.class, () -> bookingService.updateBooking(55L, new Booking()));
+    }
+
+    @Test
+    @Order(10)
+    void saveBookingTest()
+    {
+        bookingService.saveBooking(new Booking(), 1L, 1L);
+        Booking bookingDb = bookingService.getSingleBooking(6L);
+        assertEquals(6, bookingDb.getId());
+    }
+    @Test
+    @Order(10)
+    void deleteBookingTest()
+    {
+        bookingService.deleteBooking(1L);
+        assertThrows(BookingNotExist.class, () -> bookingService.getSingleBooking(1L));
     }
 }
