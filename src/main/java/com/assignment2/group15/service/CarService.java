@@ -1,7 +1,7 @@
 package com.assignment2.group15.service;
 
-import com.assignment2.group15.exception.CarNotExist;
 import com.assignment2.group15.entity.Car;
+import com.assignment2.group15.exception.NotFoundException;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class CarService
         Car car = sessionFactory.getCurrentSession().get(Car.class, id);
         
         if (car == null) {
-        	throw new CarNotExist();
+        	throw new NotFoundException();
         }
         
         return car;

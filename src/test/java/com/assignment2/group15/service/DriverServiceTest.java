@@ -1,6 +1,6 @@
 package com.assignment2.group15.service;
 
-import com.assignment2.group15.exception.DriverNotExist;
+import com.assignment2.group15.exception.NotFoundException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,7 +59,7 @@ class DriverServiceTest
     @Order(1)
     void getSingleDriverNotExistTest()
     {
-        assertThrows(DriverNotExist.class, () -> driverService.getSingleDriver(55L));
+        assertThrows(NotFoundException.class, () -> driverService.getSingleDriver(55L));
     }
 
     @Test
@@ -78,7 +78,7 @@ class DriverServiceTest
     @Order(5)
     void updateDriverNotExistTest()
     {
-        assertThrows(DriverNotExist.class, () -> driverService.updateDriver(new Driver(), 55L, 55L));
+        assertThrows(NotFoundException.class, () -> driverService.updateDriver(new Driver(), 55L, 55L));
     }
     @Test
     @Order(10)
@@ -93,6 +93,6 @@ class DriverServiceTest
     void deleteDriverTest()
     {
         driverService.deleteDriver(1L);
-        assertThrows(DriverNotExist.class, () -> driverService.getSingleDriver(1L));
+        assertThrows(NotFoundException.class, () -> driverService.getSingleDriver(1L));
     }
 }

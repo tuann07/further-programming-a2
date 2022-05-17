@@ -1,7 +1,7 @@
 package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.*;
-import com.assignment2.group15.exception.InvoiceNotExist;
+import com.assignment2.group15.exception.NotFoundException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -104,7 +104,7 @@ class InvoiceServiceTest {
     @Test
     @Order(1)
     void getSingleInvoiceNotExistTest() {
-        assertThrows(InvoiceNotExist.class, () -> invoiceService.getSingleInvoice(99L));
+        assertThrows(NotFoundException.class, () -> invoiceService.getSingleInvoice(99L));
     }
 
     @Test
@@ -135,7 +135,7 @@ class InvoiceServiceTest {
     @Test
     @Order(70)
     void updateInvoiceNotExistTest() {
-        assertThrows(InvoiceNotExist.class, () -> invoiceService.updateInvoice(99L, new Invoice()));
+        assertThrows(NotFoundException.class, () -> invoiceService.updateInvoice(99L, new Invoice()));
     }
 
     @Test
@@ -151,12 +151,12 @@ class InvoiceServiceTest {
     void deleteInvoiceTest() {
         invoiceService.deleteInvoice(1L);
 
-        assertThrows(InvoiceNotExist.class, () -> invoiceService.getSingleInvoice(1L));
+        assertThrows(NotFoundException.class, () -> invoiceService.getSingleInvoice(1L));
     }
 
     @Test
     @Order(90)
     void deleteInvoiceNotExistTest() {
-        assertThrows(InvoiceNotExist.class, () -> invoiceService.deleteInvoice(99L));
+        assertThrows(NotFoundException.class, () -> invoiceService.deleteInvoice(99L));
     }
 }

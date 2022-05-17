@@ -1,6 +1,6 @@
 package com.assignment2.group15.service;
 
-import com.assignment2.group15.exception.BookingNotExist;
+import com.assignment2.group15.exception.NotFoundException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,7 +67,7 @@ class BookingServiceTest
     @Order(1)
     void getSingleBookingNotExistTest()
     {
-        assertThrows(BookingNotExist.class, () -> bookingService.getSingleBooking(99L));
+        assertThrows(NotFoundException.class, () -> bookingService.getSingleBooking(99L));
     }
 
     @Test
@@ -86,7 +86,7 @@ class BookingServiceTest
     @Order(5)
     void updateBookingNotExistTest()
     {
-        assertThrows(BookingNotExist.class, () -> bookingService.updateBooking(55L, new Booking()));
+        assertThrows(NotFoundException.class, () -> bookingService.updateBooking(55L, new Booking()));
     }
 
     @Test
@@ -102,6 +102,6 @@ class BookingServiceTest
     void deleteBookingTest()
     {
         bookingService.deleteBooking(1L);
-        assertThrows(BookingNotExist.class, () -> bookingService.getSingleBooking(1L));
+        assertThrows(NotFoundException.class, () -> bookingService.getSingleBooking(1L));
     }
 }

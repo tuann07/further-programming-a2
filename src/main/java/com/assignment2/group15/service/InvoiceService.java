@@ -2,8 +2,10 @@ package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.Booking;
 import com.assignment2.group15.entity.Invoice;
-import com.assignment2.group15.exception.InvoiceNotExist;
+import com.assignment2.group15.exception.BadRequestException;
+import com.assignment2.group15.exception.NotFoundException;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,7 +91,7 @@ public class InvoiceService {
         Invoice invoice = sessionFactory.getCurrentSession().get(Invoice.class, invoiceId);
 
         if (invoice == null) {
-            throw new InvoiceNotExist();
+            throw new NotFoundException();
         }
 
         return invoice;
@@ -101,7 +103,12 @@ public class InvoiceService {
         invoice.setBooking(booking);
         // override the date created with the current time
         invoice.setDateCreated(ZonedDateTime.now());
-        sessionFactory.getCurrentSession().save(invoice);
+
+        try {
+            sessionFactory.getCurrentSession().save(invoice);
+        } catch (ConstraintViolationException e) {
+            throw new BadRequestException();
+        }
         return invoice;
     }
 

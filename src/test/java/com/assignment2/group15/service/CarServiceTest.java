@@ -1,6 +1,6 @@
 package com.assignment2.group15.service;
 
-import com.assignment2.group15.exception.CarNotExist;
+import com.assignment2.group15.exception.NotFoundException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,7 +50,7 @@ class CarServiceTest {
     @Order(1)
     void getSingleCarNotExistTest()
     {
-        assertThrows(CarNotExist.class, () -> carService.getSingleCar(55L));
+        assertThrows(NotFoundException.class, () -> carService.getSingleCar(55L));
     }
 
     @Test
@@ -78,7 +78,7 @@ class CarServiceTest {
     @Order(5)
     void updateCarNotExistTest()
     {
-        assertThrows(CarNotExist.class, () -> carService.updateCar(55L, new Car()));
+        assertThrows(NotFoundException.class, () -> carService.updateCar(55L, new Car()));
     }
 
     @Test
@@ -86,6 +86,6 @@ class CarServiceTest {
     void deleteCarTest()
     {
         carService.deleteCar(1L);
-        assertThrows(CarNotExist.class, () -> carService.getSingleCar(1L));
+        assertThrows(NotFoundException.class, () -> carService.getSingleCar(1L));
     }
 }

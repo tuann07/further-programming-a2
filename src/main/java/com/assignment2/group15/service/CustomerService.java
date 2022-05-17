@@ -1,7 +1,7 @@
 package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.Customer;
-import com.assignment2.group15.exception.CustomerNotExist;
+import com.assignment2.group15.exception.NotFoundException;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,7 +93,7 @@ public class CustomerService {
         Customer customer = sessionFactory.getCurrentSession().get(Customer.class, customerId);
 
         if (customer == null) {
-            throw new CustomerNotExist();
+            throw new NotFoundException();
         }
 
         return customer;

@@ -2,8 +2,10 @@ package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.Car;
 import com.assignment2.group15.entity.Driver;
-import com.assignment2.group15.exception.DriverNotExist;
+import com.assignment2.group15.exception.BadRequestException;
+import com.assignment2.group15.exception.NotFoundException;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,7 +103,7 @@ public class DriverService {
 
 
         if (driver == null) {
-            throw new DriverNotExist();
+            throw new NotFoundException();
         }
 
         return driver;
@@ -112,7 +114,13 @@ public class DriverService {
         Car car = carService.getSingleCar(carId);
         driver.setCar(car);
         driver.setDateCreated(ZonedDateTime.now());
-        sessionFactory.getCurrentSession().save(driver);
+
+        try {
+            sessionFactory.getCurrentSession().save(driver);
+        } catch (ConstraintViolationException e) {
+            throw new BadRequestException();
+        }
+
         return driver;
     }
 
