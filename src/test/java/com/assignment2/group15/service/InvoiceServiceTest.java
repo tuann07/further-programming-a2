@@ -6,6 +6,8 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,11 +45,15 @@ class InvoiceServiceTest {
         }
 
         for (int i = 1; i < NUM_OF_OTHERS + 1; i++) {
-            bookingService.saveBooking(new Booking(), (long) i, (long) i);
+            Booking booking = new Booking();
+            booking.setPickup(LocalDate.of(2022, 10, i).atStartOfDay());
+            bookingService.saveBooking(booking, (long) i, (long) i);
         }
 
         for (int i = 1; i < NUM_OF_INVOICES + 1; i++) {
-            invoiceService.saveInvoice((long) i, new Invoice());
+            Invoice invoice = new Invoice();
+            invoice.setTotalCharge((double) i);
+            invoiceService.saveInvoice((long) i, invoice);
         }
     }
 
@@ -81,7 +87,11 @@ class InvoiceServiceTest {
     @Test
     @Order(1)
     void getAllInvoicesDateFilteringTest() {
-        // TODO
+        List<Invoice> result = invoiceService.getAllInvoices(null, null, "2022-10-02", "2022-10-04");
+        assertEquals(3, result.size());
+
+        List<Invoice> resultWithPagination = invoiceService.getAllInvoices(2, 2, "2022-10-02", "2022-10-04");
+        assertEquals(1, resultWithPagination.size());
     }
 
     @Test
@@ -101,13 +111,15 @@ class InvoiceServiceTest {
     @Test
     @Order(1)
     void getRevenueByCustomerTest() {
-        // TODO
+        Double result = invoiceService.getRevenueByCustomer(2L, "2022-10-02", "2022-10-04");
+        assertEquals(2, result);
     }
 
     @Test
     @Order(1)
     void getRevenueByDriverTest() {
-        // TODO
+        Double result = invoiceService.getRevenueByDriver(2L, "2022-10-02", "2022-10-04");
+        assertEquals(2, result);
     }
 
     @Test

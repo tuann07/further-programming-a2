@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -24,10 +25,10 @@ public class Booking
 	private String endLoc;
 	
 	@Column
-	private LocalDate pickup;
+	private LocalDateTime pickup;
 	
 	@Column
-	private LocalDate drop;
+	private LocalDateTime drop;
 	
 	@Column
 	private Long distance;
@@ -50,17 +51,20 @@ public class Booking
 
 	public Booking() {}
 
-	public Booking(Long id, String startLoc, String endLoc, LocalDate pickup, LocalDate drop, Long distance, Customer customer, Driver driver, Invoice invoice, ZonedDateTime dateCreated) {
+	public Booking(Long id, String startLoc, String endLoc, LocalDateTime pickup, LocalDateTime drop, Long distance, Customer customer, Driver driver, Invoice invoice, ZonedDateTime dateCreated) {
 		this.id = id;
 		this.startLoc = startLoc;
 		this.endLoc = endLoc;
 		this.pickup = pickup;
 		this.drop = drop;
 		this.distance = distance;
+		this.customer = customer;
+		this.driver = driver;
+		this.invoice = invoice;
 		this.dateCreated = dateCreated;
 	}
 
-	public Booking(String startLoc, String endLoc, LocalDate pickup, LocalDate drop, Long distance, Customer customer, Driver driver, Invoice invoice, ZonedDateTime dateCreated) {
+	public Booking(String startLoc, String endLoc, LocalDateTime pickup, LocalDateTime drop, Long distance, Customer customer, Driver driver, Invoice invoice, ZonedDateTime dateCreated) {
 		this.startLoc = startLoc;
 		this.endLoc = endLoc;
 		this.pickup = pickup;
@@ -96,19 +100,19 @@ public class Booking
 		this.endLoc = endLoc;
 	}
 
-	public LocalDate getPickup() {
+	public LocalDateTime getPickup() {
 		return pickup;
 	}
 
-	public void setPickup(LocalDate pickup) {
+	public void setPickup(LocalDateTime pickup) {
 		this.pickup = pickup;
 	}
 
-	public LocalDate getDrop() {
+	public LocalDateTime getDrop() {
 		return drop;
 	}
 
-	public void setDrop(LocalDate drop) {
+	public void setDrop(LocalDateTime drop) {
 		this.drop = drop;
 	}
 

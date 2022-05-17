@@ -1,7 +1,6 @@
 package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.Booking;
-import com.assignment2.group15.entity.Driver;
 import com.assignment2.group15.entity.Invoice;
 import com.assignment2.group15.errors.InvoiceNotExist;
 import org.hibernate.SessionFactory;
@@ -10,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.awt.print.Book;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -37,23 +36,24 @@ public class InvoiceService {
 
     public List<Invoice> getAllInvoices(Integer page, Integer limit, String start, String end) {
         String hql;
-        LocalDate startDate, endDate;
+        LocalDateTime startDate, endDate;
         Query query;
         int pageNumber, limitNumber;
 
-        hql = "from Invoice i";
+        hql = "from Invoice i ";
 
-        if (start != null || end != null) {
-            hql += " where i.booking.pickup between :start and :end";
+        if (start != null && end != null) {
+            hql += "where i.booking.pickup between :start and :end";
         }
 
         query = sessionFactory.getCurrentSession().createQuery(hql);
 
         // filtering
         // by date, only activate if start or end date is presented
-        if (start != null || end != null) {
-            startDate = start == null ? LocalDate.of(1970, 1, 1) : LocalDate.parse(start);
-            endDate = end == null ? LocalDate.of(2050, 1, 1) : LocalDate.parse(end);
+        if (start != null && end != null) {
+            startDate = LocalDate.parse(start).atStartOfDay();
+            endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+            System.out.println(endDate);
 
             query.setParameter("start", startDate);
             query.setParameter("end", endDate);
@@ -128,11 +128,13 @@ public class InvoiceService {
 
     public Double getRevenueByCustomer(Long customerId, String start, String end) {
         // convert local date
-        LocalDate startDate = LocalDate.parse(start);
-        LocalDate endDate = LocalDate.parse(end);
+        LocalDateTime startDate = LocalDate.parse(start).atStartOfDay();
+        LocalDateTime endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
 
         // create query to get the sum of total charges of a customer with the pickup date between a start and end
-        String hql = "select sum(i.totalCharge) from Invoice i where i.booking.customer.id = :customerId and i.booking.pickup between :start and :end";
+        String hql = "select sum(i.totalCharge) from Invoice i " +
+                "where i.booking.customer.id = :customerId and " +
+                "i.booking.pickup between :start and :end";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("customerId", customerId);
         query.setParameter("start", startDate);
@@ -143,12 +145,14 @@ public class InvoiceService {
     }
 
     public Double getRevenueByDriver(Long driverId, String start, String end) {
-        // convert to local date
-        LocalDate startDate = LocalDate.parse(start);
-        LocalDate endDate = LocalDate.parse(end);
+        // convert local date
+        LocalDateTime startDate = LocalDate.parse(start).atStartOfDay();
+        LocalDateTime endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
 
         // create query to get the sum of total charges of a driver with the pickup date between a start and end
-        String hql = "select sum(i.totalCharge) from Invoice i where i.booking.driver.id = :driverId and i.booking.pickup between :start and :end";
+        String hql = "select sum(i.totalCharge) from Invoice i " +
+                "where i.booking.driver.id = :driverId and " +
+                "i.booking.pickup between :start and :end";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("driverId", driverId);
         query.setParameter("start", startDate);

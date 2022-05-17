@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,16 +109,21 @@ public class CarService
 
     public List<Map<String, Long>> getCarUsageInMonth(Integer year, Integer month) {
         String hql =
-                "select distinct b.driver.car.id, count(distinct b.pickup) " +
-                "from Booking b where b.pickup between :start and :end " +
+                "select distinct b.driver.car.id, count(distinct day(b.pickup)) " +
+                "from Booking b where b.pickup > :start and b.pickup < :end " +
                 "group by b.driver.car.id";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
 
-        LocalDate startDate = LocalDate.of(year, month, 1);
-        LocalDate endDate = startDate.plusDays(startDate.lengthOfMonth() - 1);
+        LocalDate startLD = LocalDate.of(year, month, 1);
+        // end date gets to the next month because i will get the start time of that day
+        // e.g.: 0 a.m of November 1st to 0 a.m of December 1st
+        LocalDate endLD = startLD.plusDays(startLD.lengthOfMonth());
 
-        query.setParameter("start", startDate);
-        query.setParameter("end", endDate);
+        LocalDateTime startLDT = startLD.atStartOfDay();
+        LocalDateTime endLDT = endLD.atStartOfDay().minusSeconds(1);
+
+        query.setParameter("start", startLDT);
+        query.setParameter("end", endLDT);
 
         List<?> queryResult = query.list();
 

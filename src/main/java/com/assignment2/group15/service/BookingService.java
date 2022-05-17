@@ -1,9 +1,9 @@
 package com.assignment2.group15.service;
 
+import com.assignment2.group15.entity.Booking;
 import com.assignment2.group15.entity.Customer;
 import com.assignment2.group15.entity.Driver;
 import com.assignment2.group15.errors.BookingNotExist;
-import com.assignment2.group15.entity.Booking;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -43,22 +44,24 @@ public class BookingService {
     public List<Booking> getAllBooking(Integer page, Integer limit, String start, String end)
     {
         String hql;
-        LocalDate startDate, endDate;
+        LocalDateTime startDate, endDate;
         Query query;
         int pageNumber, limitNumber;
 
-        hql = "from Booking b";
+        hql = "from Booking b ";
 
-        if (start != null || end != null) {
-            hql+=" where b.pickup between :start and :end";
+        if (start != null && end != null) {
+            hql += "where b.pickup between :start and :end";
         }
 
         query = sessionFactory.getCurrentSession().createQuery(hql);
 
         // filtering
-        if (start != null || end != null) {
-            startDate = start == null ? LocalDate.of(1970, 1, 1) : LocalDate.parse(start);
-            endDate = end == null ? LocalDate.of(2050, 1, 1) : LocalDate.parse(end);
+        if (start != null && end != null) {
+            startDate = LocalDate.parse(start).atStartOfDay();
+            // get start of next day similar to the end of previous day
+            endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+            System.out.println(endDate);
 
             query.setParameter("start", startDate);
             query.setParameter("end", endDate);
