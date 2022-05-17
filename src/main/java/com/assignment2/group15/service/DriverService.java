@@ -34,14 +34,41 @@ public class DriverService {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Driver> getAllDriver(Integer page, Integer limit){
+    public List<Driver> getAllDriver(Integer page, Integer limit, String name, String address, String phone){
         String hql;
         Query query;
         int pageNumber, limitNumber;
+        boolean isSearch = false;
 
-        hql = "from Driver";
+        hql = "from Driver d ";
+
+        if (name != null || address != null || phone != null) {
+            hql += "where ";
+
+            if (name != null) {
+                hql += "d.name = :name ";
+                isSearch = true;
+            }
+            if (address != null) {
+                hql += (isSearch ? "and " : "") + "d.address = :address ";
+                isSearch = true;
+            }
+            if (phone != null) {
+                hql += (isSearch ? "and " : "") + "d.phone = :phone";
+            }
+        }
 
         query = sessionFactory.getCurrentSession().createQuery(hql);
+
+        if (name != null) {
+            query.setParameter("name", name);
+        }
+        if (address != null) {
+            query.setParameter("address", address);
+        }
+        if (phone != null) {
+            query.setParameter("phone", phone);
+        }
 
         // paging
         // if not provide or negative, set default

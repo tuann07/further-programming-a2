@@ -7,7 +7,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "customer")
+@Table
 public class Customer {
     @Id
     @Column

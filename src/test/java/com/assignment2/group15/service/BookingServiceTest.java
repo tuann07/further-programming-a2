@@ -16,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class BookingServiceTest
 {
     @Autowired
-    private InvoiceService invoiceService;
-    @Autowired
     private CarService carService;
     @Autowired
     private BookingService bookingService;

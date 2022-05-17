@@ -21,9 +21,12 @@ public class CustomerController
     @GetMapping
     public List<Customer> getAllCustomers(
             @RequestParam(required=false) Integer page,
-            @RequestParam(required=false) Integer limit
+            @RequestParam(required=false) Integer limit,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String phone
     ) {
-        return customerService.getAllCustomer(page, limit);
+        return customerService.getAllCustomer(page, limit, name, address, phone);
     }
 
     @GetMapping(path="{customerId}")

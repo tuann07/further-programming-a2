@@ -32,7 +32,7 @@ class CustomerServiceTest
     @Order(1)
     void getAllCustomerTest()
     {
-        List<Customer> result = customerService.getAllCustomer(null, null);
+        List<Customer> result = customerService.getAllCustomer(null, null, null, null, null);
 
         assertEquals(5, result.size());
         assertEquals(1, result.get(0).getId());

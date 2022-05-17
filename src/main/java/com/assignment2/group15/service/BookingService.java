@@ -59,9 +59,8 @@ public class BookingService {
         // filtering
         if (start != null && end != null) {
             startDate = LocalDate.parse(start).atStartOfDay();
-            // get start of next day similar to the end of previous day
+            // get the time with last second of the last day of month
             endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
-            System.out.println(endDate);
 
             query.setParameter("start", startDate);
             query.setParameter("end", endDate);

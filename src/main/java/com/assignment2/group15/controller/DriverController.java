@@ -16,9 +16,12 @@ public class DriverController {
     @GetMapping
     public List<Driver> getAllDrivers(
             @RequestParam(required = false) Integer page,
-            @RequestParam(required=false) Integer limit
+            @RequestParam(required=false) Integer limit,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String phone
     ) {
-        return driverService.getAllDriver(page, limit);
+        return driverService.getAllDriver(page, limit, name, address, phone);
     }
 
     @GetMapping(path="{driverId}")

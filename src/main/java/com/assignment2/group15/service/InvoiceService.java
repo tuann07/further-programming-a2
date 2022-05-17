@@ -52,8 +52,8 @@ public class InvoiceService {
         // by date, only activate if start or end date is presented
         if (start != null && end != null) {
             startDate = LocalDate.parse(start).atStartOfDay();
+            // get the time with last second of the last day of month
             endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
-            System.out.println(endDate);
 
             query.setParameter("start", startDate);
             query.setParameter("end", endDate);
@@ -133,8 +133,8 @@ public class InvoiceService {
 
         // create query to get the sum of total charges of a customer with the pickup date between a start and end
         String hql = "select sum(i.totalCharge) from Invoice i " +
-                "where i.booking.customer.id = :customerId and " +
-                "i.booking.pickup between :start and :end";
+                "where i.booking.customer.id = :customerId " +
+                "and i.booking.pickup between :start and :end";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("customerId", customerId);
         query.setParameter("start", startDate);
@@ -151,8 +151,8 @@ public class InvoiceService {
 
         // create query to get the sum of total charges of a driver with the pickup date between a start and end
         String hql = "select sum(i.totalCharge) from Invoice i " +
-                "where i.booking.driver.id = :driverId and " +
-                "i.booking.pickup between :start and :end";
+                "where i.booking.driver.id = :driverId " +
+                "and i.booking.pickup between :start and :end";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("driverId", driverId);
         query.setParameter("start", startDate);

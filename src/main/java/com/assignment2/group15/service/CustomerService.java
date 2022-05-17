@@ -25,15 +25,42 @@ public class CustomerService {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Customer> getAllCustomer(Integer page, Integer limit)
+    public List<Customer> getAllCustomer(Integer page, Integer limit, String name, String address, String phone)
     {
         String hql;
         Query query;
         int pageNumber, limitNumber;
+        boolean isSearch = false;
 
-        hql = "from Customer";
+        hql = "from Customer c ";
+
+        if (name != null || address != null || phone != null) {
+            hql += "where ";
+
+            if (name != null) {
+                hql += "c.name = :name ";
+                isSearch = true;
+            }
+            if (address != null) {
+                hql += (isSearch ? "and " : "") + "c.address = :address ";
+                isSearch = true;
+            }
+            if (phone != null) {
+                hql += (isSearch ? "and " : "") + "c.phone = :phone";
+            }
+        }
 
         query = sessionFactory.getCurrentSession().createQuery(hql);
+
+        if (name != null) {
+            query.setParameter("name", name);
+        }
+        if (address != null) {
+            query.setParameter("address", address);
+        }
+        if (phone != null) {
+            query.setParameter("phone", phone);
+        }
 
         // paging
         // if not provide or negative, set default

@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "driver")
+@Table
 public class Driver {
     @Id
     @Column
@@ -17,6 +17,12 @@ public class Driver {
 
     @Column
     private String license;
+
+    @Column
+    private String name;
+
+    @Column
+    private String address;
 
     @Column
     private String phone;
@@ -39,9 +45,11 @@ public class Driver {
     public Driver() {
     }
 
-    public Driver(Long id, String license, String phone, Double rating, Car car, List<Booking> bookings, ZonedDateTime dateCreated) {
+    public Driver(Long id, String license, String name, String address, String phone, Double rating, Car car, List<Booking> bookings, ZonedDateTime dateCreated) {
         this.id = id;
         this.license = license;
+        this.name = name;
+        this.address = address;
         this.phone = phone;
         this.rating = rating;
         this.car = car;
@@ -49,8 +57,10 @@ public class Driver {
         this.dateCreated = dateCreated;
     }
 
-    public Driver(String license, String phone, Double rating, Car car, List<Booking> bookings, ZonedDateTime dateCreated) {
+    public Driver(String license, String name, String address, String phone, Double rating, Car car, List<Booking> bookings, ZonedDateTime dateCreated) {
         this.license = license;
+        this.name = name;
+        this.address = address;
         this.phone = phone;
         this.rating = rating;
         this.car = car;
@@ -72,6 +82,22 @@ public class Driver {
 
     public void setLicense(String license) {
         this.license = license;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhone() {
@@ -119,6 +145,8 @@ public class Driver {
         return "Driver{" +
                 "id=" + id +
                 ", license='" + license + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", rating=" + rating +
                 ", car=" + car +
