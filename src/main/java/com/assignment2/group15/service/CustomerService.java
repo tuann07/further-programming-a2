@@ -1,7 +1,7 @@
 package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.Customer;
-import com.assignment2.group15.errors.CustomerNotExist;
+import com.assignment2.group15.exception.CustomerNotExist;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

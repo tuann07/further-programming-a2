@@ -1,13 +1,12 @@
 package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.*;
-import com.assignment2.group15.errors.InvoiceNotExist;
+import com.assignment2.group15.exception.InvoiceNotExist;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -2,7 +2,7 @@ package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.Car;
 import com.assignment2.group15.entity.Driver;
-import com.assignment2.group15.errors.DriverNotExist;
+import com.assignment2.group15.exception.DriverNotExist;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;

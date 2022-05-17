@@ -1,6 +1,6 @@
 package com.assignment2.group15.service;
 
-import com.assignment2.group15.errors.BookingNotExist;
+import com.assignment2.group15.exception.BookingNotExist;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

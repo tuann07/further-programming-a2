@@ -2,7 +2,7 @@ package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.Booking;
 import com.assignment2.group15.entity.Invoice;
-import com.assignment2.group15.errors.InvoiceNotExist;
+import com.assignment2.group15.exception.InvoiceNotExist;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;

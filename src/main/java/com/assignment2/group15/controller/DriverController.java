@@ -1,7 +1,6 @@
 package com.assignment2.group15.controller;
 
 import com.assignment2.group15.entity.Driver;
-import com.assignment2.group15.errors.DriverNotExist;
 import com.assignment2.group15.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
