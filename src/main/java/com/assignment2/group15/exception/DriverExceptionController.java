@@ -1,4 +1,4 @@
-package com.assignment2.group15.errors;
+package com.assignment2.group15.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
