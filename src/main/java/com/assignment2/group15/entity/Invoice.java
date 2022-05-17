@@ -22,6 +22,7 @@ public class Invoice {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id", nullable = false, unique = true)
+    @JsonIgnore
     private Booking booking;
 
     @Column

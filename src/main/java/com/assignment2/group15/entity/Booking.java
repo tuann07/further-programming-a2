@@ -34,16 +34,15 @@ public class Booking
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore()
+	@JsonIgnore
 	private Customer customer;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore()
+	@JsonIgnore
 	private Driver driver;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "booking")
-	@JsonIgnore()
 	private Invoice invoice;
 	
 	@Column

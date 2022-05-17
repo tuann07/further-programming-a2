@@ -39,7 +39,6 @@ public class Car
 	private Double ratePerKm;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
-	@JsonIgnore()
 	private Driver driver;
 
 	@Column

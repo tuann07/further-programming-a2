@@ -26,9 +26,10 @@ public class Driver {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id", nullable = false, unique = true)
+    @JsonIgnore
     private Car car;
 
-    @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "driver", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     private List<Booking> bookings;
 
