@@ -103,7 +103,7 @@ public class DriverService {
 
 
         if (driver == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("Driver with id " + driverId + " not found");
         }
 
         return driver;
@@ -121,7 +121,7 @@ public class DriverService {
         try {
             sessionFactory.getCurrentSession().save(driver);
         } catch (ConstraintViolationException e) {
-            throw new BadRequestException();
+            throw new BadRequestException("Car with id " + carId + " has been registered");
         }
 
         return driver;

@@ -79,7 +79,7 @@ public class InvoiceService {
                 // get the time with last second of the last day of month
                 endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
             } catch (DateTimeParseException e) {
-                throw new BadRequestException();
+                throw new BadRequestException("Invalid date format");
             }
 
             query.setParameter("start", startDate);
@@ -116,7 +116,7 @@ public class InvoiceService {
         Invoice invoice = sessionFactory.getCurrentSession().get(Invoice.class, invoiceId);
 
         if (invoice == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("Invoice with id " + invoiceId + " not found");
         }
 
         return invoice;
@@ -132,7 +132,7 @@ public class InvoiceService {
         try {
             sessionFactory.getCurrentSession().save(invoice);
         } catch (ConstraintViolationException e) {
-            throw new BadRequestException();
+            throw new BadRequestException("Booking with id " + bookingId + " already has another invoice attached");
         }
         return invoice;
     }
@@ -168,7 +168,7 @@ public class InvoiceService {
             startDate = LocalDate.parse(start).atStartOfDay();
             endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
         } catch (DateTimeParseException e) {
-            throw new BadRequestException();
+            throw new BadRequestException("Invalid date format");
         }
 
         // create query to get the sum of total charges of a customer with the pickup date between a start and end
@@ -192,7 +192,7 @@ public class InvoiceService {
             startDate = LocalDate.parse(start).atStartOfDay();
             endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
         } catch (DateTimeParseException e) {
-            throw new BadRequestException();
+            throw new BadRequestException("Invalid date format");
         }
 
         // create query to get the sum of total charges of a driver with the pickup date between a start and end

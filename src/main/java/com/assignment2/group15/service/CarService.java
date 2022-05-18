@@ -74,7 +74,7 @@ public class CarService
         Car car = sessionFactory.getCurrentSession().get(Car.class, id);
         
         if (car == null) {
-        	throw new NotFoundException();
+        	throw new NotFoundException("Car with id " + id + " not found");
         }
         
         return car;
@@ -130,7 +130,7 @@ public class CarService
             // e.g.: 0 a.m of November 1st to 0 a.m of December 1st
             endLD = startLD.plusDays(startLD.lengthOfMonth());
         } catch (DateTimeParseException e) {
-            throw new BadRequestException();
+            throw new BadRequestException("Invalid date format");
         }
 
         LocalDateTime startLDT = startLD.atStartOfDay();

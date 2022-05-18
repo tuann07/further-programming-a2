@@ -70,7 +70,7 @@ public class BookingService {
                 // get the time with last second of the last day of month
                 endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
             } catch (DateTimeParseException e) {
-                throw new BadRequestException();
+                throw new BadRequestException("Invalid date format");
             }
 
             query.setParameter("start", startDate);
@@ -107,7 +107,7 @@ public class BookingService {
         Booking booking = sessionFactory.getCurrentSession().get(Booking.class, bookingId);
         
         if (booking == null) {
-        	throw new NotFoundException();
+        	throw new NotFoundException("Booking with id " + bookingId + " not found");
         }
         
         return booking;
@@ -118,7 +118,7 @@ public class BookingService {
         Driver driver = carService.getSingleCar(carId).getDriver();
 
         if (driver == null) {
-            throw new BadRequestException();
+            throw new BadRequestException("No driver has registered this vehicle");
         }
 
         booking.setCustomer(customer);

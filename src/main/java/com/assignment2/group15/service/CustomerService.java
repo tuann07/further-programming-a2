@@ -93,7 +93,7 @@ public class CustomerService {
         Customer customer = sessionFactory.getCurrentSession().get(Customer.class, customerId);
 
         if (customer == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("Car with id " + customerId + " not found");
         }
 
         return customer;
