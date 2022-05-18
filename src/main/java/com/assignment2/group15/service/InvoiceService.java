@@ -141,6 +141,8 @@ public class InvoiceService {
         // ensure the item in the database
         Invoice oldInvoice = this.getSingleInvoice(invoiceId);
 
+        if (invoice.getTotalCharge() == null) invoice.setTotalCharge(oldInvoice.getTotalCharge());
+
         // get the old date and attach the id
         invoice.setId(invoiceId);
         invoice.setBooking(oldInvoice.getBooking());

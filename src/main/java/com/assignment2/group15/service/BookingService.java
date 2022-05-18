@@ -117,6 +117,10 @@ public class BookingService {
         Customer customer = customerService.getSingleCustomer(customerId);
         Driver driver = carService.getSingleCar(carId).getDriver();
 
+        if (driver == null) {
+            throw new BadRequestException();
+        }
+
         booking.setCustomer(customer);
         booking.setDriver(driver);
 
@@ -126,16 +130,21 @@ public class BookingService {
         return booking;
     }
     
-    public Booking updateBooking(Long bookID, Booking booking)
+    public Booking updateBooking(Long bookingId, Booking booking)
     {
         // keep old properties
-        Booking oldBooking = this.getSingleBooking(bookID);
+        Booking oldBooking = this.getSingleBooking(bookingId);
+
+        if (booking.getStartLoc() == null) booking.setStartLoc(oldBooking.getStartLoc());
+        if (booking.getEndLoc() == null) booking.setEndLoc(oldBooking.getEndLoc());
+        if (booking.getDistance() == null) booking.setDistance(oldBooking.getDistance());
+        if (booking.getPickup() == null) booking.setPickup(oldBooking.getPickup());
+        if (booking.getDrop() == null) booking.setDrop(oldBooking.getDrop());
+
         booking.setCustomer(oldBooking.getCustomer());
         booking.setDriver(oldBooking.getDriver());
         booking.setDateCreated(oldBooking.getDateCreated());
-
-        // set id
-        booking.setId(bookID);
+        booking.setId(bookingId);
 
         // update
         sessionFactory.getCurrentSession().merge(booking);

@@ -31,7 +31,7 @@ public class Driver {
     private Double rating;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", nullable = false, unique = true)
+    @JoinColumn(name = "car_id", nullable = true, unique = true)
     @JsonIgnore
     private Car car;
 

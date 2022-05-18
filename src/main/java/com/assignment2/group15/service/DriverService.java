@@ -112,7 +112,10 @@ public class DriverService {
     public Driver saveDriver(Driver driver, Long carId)
     {
         Car car = carService.getSingleCar(carId);
-        driver.setCar(car);
+
+        if (carId != null) {
+            driver.setCar(car);
+        }
         driver.setDateCreated(ZonedDateTime.now());
 
         try {
@@ -127,6 +130,13 @@ public class DriverService {
     public Driver updateDriver(Driver driver, Long driverId, Long carId) {
         // keep old properties
         Driver oldDriver = this.getSingleDriver(driverId);
+
+        if (driver.getName() == null) driver.setName(oldDriver.getName());
+        if (driver.getLicense() == null) driver.setLicense(oldDriver.getLicense());
+        if (driver.getAddress() == null) driver.setAddress(oldDriver.getAddress());
+        if (driver.getPhone() == null) driver.setPhone(oldDriver.getPhone());
+        if (driver.getRating() == null) driver.setRating(oldDriver.getRating());
+
         driver.setDateCreated(oldDriver.getDateCreated());
         driver.setCar(oldDriver.getCar());
 

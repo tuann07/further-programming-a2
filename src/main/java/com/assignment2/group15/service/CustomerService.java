@@ -109,9 +109,14 @@ public class CustomerService {
     public Customer updateCustomer(Long customerID, Customer customer) {
         // keep old properties
         Customer oldCustomer = this.getSingleCustomer(customerID);
-        customer.setDateCreated(oldCustomer.getDateCreated());
 
+        if (customer.getName() == null) customer.setName(oldCustomer.getName());
+        if (customer.getPhone() == null) customer.setPhone(oldCustomer.getPhone());
+        if (customer.getAddress() == null) customer.setAddress(oldCustomer.getAddress());
+
+        customer.setDateCreated(oldCustomer.getDateCreated());
         customer.setId(customerID);
+
         sessionFactory.getCurrentSession().merge(customer);
         return customer;
     }

@@ -91,9 +91,19 @@ public class CarService
     {
         // keep old properties
         Car oldCar = this.getSingleCar(carID);
-        car.setDateCreated(oldCar.getDateCreated());
 
+        if (car.getVin() == null) car.setVin(oldCar.getVin());
+        if (car.getMake() == null) car.setMake(oldCar.getMake());
+        if (car.getModel() == null) car.setModel(oldCar.getModel());
+        if (car.getColor() == null) car.setColor(oldCar.getColor());
+        if (car.getConvertible() == null) car.setConvertible(oldCar.getConvertible());
+        if (car.getRating() == null) car.setRating(oldCar.getRating());
+        if (car.getLicense() == null) car.setLicense(oldCar.getLicense());
+        if (car.getRatePerKm() == null) car.setRatePerKm(oldCar.getRatePerKm());
+
+        car.setDateCreated(oldCar.getDateCreated());
         car.setcarID(carID);
+
         sessionFactory.getCurrentSession().merge(car);
         return car;
     }
