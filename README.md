@@ -1,4 +1,5 @@
-# Details
+# Assignment 2
+## Details
 Course: Further Programming
 
 Assignment: 2
