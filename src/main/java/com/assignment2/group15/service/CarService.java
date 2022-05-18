@@ -33,15 +33,39 @@ public class CarService
         this.sessionFactory = sessionFactory;
     }
 
-	public List<Car> getAllCar(Integer page, Integer limit)
+	public List<Car> getAllCar(Integer page, Integer limit, Boolean available, String model, String color)
     {
         String hql;
         Query query;
         int pageNumber, limitNumber;
+        boolean isSearch = false;
 
-        hql = "from Car";
+        hql = "from Car c ";
+
+        if (model != null || color != null || available != null) {
+            hql += "where ";
+
+            if (available != null) {
+                if (available) hql += "c.driver.id is not null ";
+                isSearch = true;
+            }
+            if (model != null) {
+                hql += (isSearch ? "and " : "") + "c.model = :model ";
+                isSearch = true;
+            }
+            if (color != null) {
+                hql += (isSearch ? "and " : "") + "c.color = :color ";
+            }
+        }
 
         query = sessionFactory.getCurrentSession().createQuery(hql);
+
+        if (model != null) {
+            query.setParameter("model", model);
+        }
+        if (color != null) {
+            query.setParameter("color", color);
+        }
 
         // paging
         // if not provide or negative, set default

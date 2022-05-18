@@ -24,9 +24,12 @@ public class CarController
 	@GetMapping
 	public List<Car> getAllCar (
 			@RequestParam(required=false) Integer page,
-			@RequestParam(required=false) Integer limit
+			@RequestParam(required=false) Integer limit,
+			@RequestParam(required = false) String model,
+			@RequestParam(required = false) String color,
+			@RequestParam(required = false) Boolean available
 	) {
-		return carService.getAllCar(page, limit);
+		return carService.getAllCar(page, limit, available, model, color);
 	}
 	
 	@GetMapping(path="{carId}")

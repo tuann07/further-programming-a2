@@ -31,7 +31,7 @@ class CarServiceTest {
     @Test
     @Order(1)
     void getAllCarTest() {
-        List<Car> result = carService.getAllCar(null, null);
+        List<Car> result = carService.getAllCar(null, null, null, null, null);
 
         assertEquals(5, result.size());
         assertEquals(1, result.get(0).getcarID());
