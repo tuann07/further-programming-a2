@@ -1,6 +1,7 @@
 package com.assignment2.group15.service;
 
 import com.assignment2.group15.entity.Car;
+import com.assignment2.group15.exception.BadRequestException;
 import com.assignment2.group15.exception.NotFoundException;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -12,6 +13,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -110,10 +112,16 @@ public class CarService
                 "group by b.driver.car.id";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
 
-        LocalDate startLD = LocalDate.of(year, month, 1);
-        // end date gets to the next month because i will get the start time of that day
-        // e.g.: 0 a.m of November 1st to 0 a.m of December 1st
-        LocalDate endLD = startLD.plusDays(startLD.lengthOfMonth());
+        LocalDate startLD, endLD;
+
+        try {
+            startLD = LocalDate.of(year, month, 1);
+            // end date gets to the next month because i will get the start time of that day
+            // e.g.: 0 a.m of November 1st to 0 a.m of December 1st
+            endLD = startLD.plusDays(startLD.lengthOfMonth());
+        } catch (DateTimeParseException e) {
+            throw new BadRequestException();
+        }
 
         LocalDateTime startLDT = startLD.atStartOfDay();
         LocalDateTime endLDT = endLD.atStartOfDay().minusSeconds(1);

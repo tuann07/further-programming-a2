@@ -60,7 +60,7 @@ class InvoiceServiceTest {
     @Order(1)
     void getAllInvoicesTest() {
         // should get all items from 1 to 5
-        List<Invoice> result = invoiceService.getAllInvoices(null, null, null, null);
+        List<Invoice> result = invoiceService.getAllInvoices(null, null, null, null, null, null);
 
         assertEquals(5, result.size());
         assertEquals(1, result.get(0).getId());
@@ -71,13 +71,13 @@ class InvoiceServiceTest {
     @Order(1)
     void getAllInvoicesPaginationTest() {
         // With 5 invoices, second page with 2 in each should return full 2 results -> 3rd, 4th items
-        List<Invoice> fullPage = invoiceService.getAllInvoices(2, 2, null, null);
+        List<Invoice> fullPage = invoiceService.getAllInvoices(2, 2, null, null, null, null);
         assertEquals(2, fullPage.size());
         assertEquals(3, fullPage.get(0).getId());
         assertEquals(4, fullPage.get(fullPage.size() - 1).getId());
 
         // With 5 invoices, second page with 3 in each should return 2 results -> 4th, 5th items
-        List<Invoice> partialPage = invoiceService.getAllInvoices(2, 3, null, null);
+        List<Invoice> partialPage = invoiceService.getAllInvoices(2, 3, null, null, null, null);
         assertEquals(2, partialPage.size());
         assertEquals(4, partialPage.get(0).getId());
         assertEquals(5, partialPage.get(partialPage.size() - 1).getId());
@@ -86,10 +86,10 @@ class InvoiceServiceTest {
     @Test
     @Order(1)
     void getAllInvoicesDateFilteringTest() {
-        List<Invoice> result = invoiceService.getAllInvoices(null, null, "2022-10-02", "2022-10-04");
+        List<Invoice> result = invoiceService.getAllInvoices(null, null, "2022-10-02", "2022-10-04", null, null);
         assertEquals(3, result.size());
 
-        List<Invoice> resultWithPagination = invoiceService.getAllInvoices(2, 2, "2022-10-02", "2022-10-04");
+        List<Invoice> resultWithPagination = invoiceService.getAllInvoices(2, 2, "2022-10-02", "2022-10-04", null, null);
         assertEquals(1, resultWithPagination.size());
     }
 

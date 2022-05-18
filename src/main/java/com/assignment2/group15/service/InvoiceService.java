@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Transactional
@@ -36,26 +37,50 @@ public class InvoiceService {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Invoice> getAllInvoices(Integer page, Integer limit, String start, String end) {
+    public List<Invoice> getAllInvoices(Integer page, Integer limit, String start, String end, Long customerId, Long driverId) {
         String hql;
         LocalDateTime startDate, endDate;
         Query query;
         int pageNumber, limitNumber;
+        boolean isSearch = false;
 
         hql = "from Invoice i ";
 
+        if (customerId != null || driverId != null) {
+            hql += "where ";
+            if (customerId != null) {
+                hql += "i.booking.customer.id = :customerId ";
+                isSearch = true;
+            }
+            if (driverId != null) {
+                hql += (isSearch ? "and " : "") + "i.booking.driver.id = :driverId ";
+                isSearch = true;
+            }
+        }
+
         if (start != null && end != null) {
-            hql += "where i.booking.pickup between :start and :end";
+            hql += (isSearch ? "and " : "where ") + "i.booking.pickup between :start and :end";
         }
 
         query = sessionFactory.getCurrentSession().createQuery(hql);
 
+        if (customerId != null) {
+            query.setParameter("customerId", customerId);
+        }
+        if (driverId != null) {
+            query.setParameter("driverId", driverId);
+        }
+
         // filtering
         // by date, only activate if start or end date is presented
         if (start != null && end != null) {
-            startDate = LocalDate.parse(start).atStartOfDay();
-            // get the time with last second of the last day of month
-            endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+            try {
+                startDate = LocalDate.parse(start).atStartOfDay();
+                // get the time with last second of the last day of month
+                endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+            } catch (DateTimeParseException e) {
+                throw new BadRequestException();
+            }
 
             query.setParameter("start", startDate);
             query.setParameter("end", endDate);
@@ -135,8 +160,14 @@ public class InvoiceService {
 
     public Double getRevenueByCustomer(Long customerId, String start, String end) {
         // convert local date
-        LocalDateTime startDate = LocalDate.parse(start).atStartOfDay();
-        LocalDateTime endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+        LocalDateTime startDate, endDate;
+
+        try {
+            startDate = LocalDate.parse(start).atStartOfDay();
+            endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+        } catch (DateTimeParseException e) {
+            throw new BadRequestException();
+        }
 
         // create query to get the sum of total charges of a customer with the pickup date between a start and end
         String hql = "select sum(i.totalCharge) from Invoice i " +
@@ -153,8 +184,14 @@ public class InvoiceService {
 
     public Double getRevenueByDriver(Long driverId, String start, String end) {
         // convert local date
-        LocalDateTime startDate = LocalDate.parse(start).atStartOfDay();
-        LocalDateTime endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+        LocalDateTime startDate, endDate;
+
+        try {
+            startDate = LocalDate.parse(start).atStartOfDay();
+            endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+        } catch (DateTimeParseException e) {
+            throw new BadRequestException();
+        }
 
         // create query to get the sum of total charges of a driver with the pickup date between a start and end
         String hql = "select sum(i.totalCharge) from Invoice i " +

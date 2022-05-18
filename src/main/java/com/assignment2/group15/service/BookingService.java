@@ -3,6 +3,7 @@ package com.assignment2.group15.service;
 import com.assignment2.group15.entity.Booking;
 import com.assignment2.group15.entity.Customer;
 import com.assignment2.group15.entity.Driver;
+import com.assignment2.group15.exception.BadRequestException;
 import com.assignment2.group15.exception.NotFoundException;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -13,6 +14,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 
@@ -63,9 +65,13 @@ public class BookingService {
 
         // filtering
         if (start != null && end != null) {
-            startDate = LocalDate.parse(start).atStartOfDay();
-            // get the time with last second of the last day of month
-            endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+            try {
+                startDate = LocalDate.parse(start).atStartOfDay();
+                // get the time with last second of the last day of month
+                endDate = LocalDate.parse(end).plusDays(1).atStartOfDay().minusSeconds(1);
+            } catch (DateTimeParseException e) {
+                throw new BadRequestException();
+            }
 
             query.setParameter("start", startDate);
             query.setParameter("end", endDate);
