@@ -1,10 +1,14 @@
 # Details
-Further Programming - Assignment 2 - Group 15
+Course: Further Programming
+
+Assignment: 2
+
+Group: 15
 
 ## Members:
-Nguyen Anh Tuan - s3817907
-Nguyen Viet Lam Tung - s3891452
-Duong Tran Le Truong - s3807528
+- Nguyen Anh Tuan - s3817907
+- Nguyen Viet Lam Tung - s3891452
+- Duong Tran Le Truong - s3807528
 
 ## Class Diagram
 ``` mermaid
