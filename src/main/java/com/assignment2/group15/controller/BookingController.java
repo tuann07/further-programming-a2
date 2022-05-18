@@ -40,9 +40,9 @@ public class BookingController
 	public Booking saveBooking(
 			@RequestBody Booking booking,
 			@RequestParam Long customerId,
-			@RequestParam Long driverId
+			@RequestParam Long carid
 	) {
-		return bookingService.saveBooking(booking, customerId, driverId);
+		return bookingService.saveBooking(booking, customerId, carid);
 	}
 	
 	@PutMapping(path="{bookingId}")

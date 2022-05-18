@@ -22,6 +22,7 @@ public class BookingService {
     private SessionFactory sessionFactory;
     private CustomerService customerService;
     private DriverService driverService;
+    private CarService carService;
 
     private static final int PAGE_DEFAULT = 1;
     private static final int LIMIT_DEFAULT = 10;
@@ -34,6 +35,10 @@ public class BookingService {
     public void setDriverService(DriverService driverService)
     {
         this.driverService = driverService;
+    }
+    @Autowired
+    public void setCarService(CarService carService) {
+        this.carService = carService;
     }
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory)
@@ -101,10 +106,10 @@ public class BookingService {
         
         return booking;
     }
-    public Booking saveBooking(Booking booking, Long customerId, Long driverId)
+    public Booking saveBooking(Booking booking, Long customerId, Long carId)
     {
         Customer customer = customerService.getSingleCustomer(customerId);
-        Driver driver = driverService.getSingleDriver(driverId);
+        Driver driver = carService.getSingleCar(carId).getDriver();
 
         booking.setCustomer(customer);
         booking.setDriver(driver);
